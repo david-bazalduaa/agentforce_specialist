@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Interactive Salesforce Certified Agentforce Specialist Exam Simulator with 379 practice questions, dual-shuffle engine, study and exam modes, and real-time scoring.">
+  <title>Agentforce Specialist Exam Simulator — 379 Practice Questions</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+</head>
+<body>
+
+  <!-- ===== LOADING OVERLAY ===== -->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="loading-card">
+      <div class="loading-spinner"></div>
+      <h2>Loading Question Bank</h2>
+      <p>Parsing 379 questions from Agentforce-Specialist.md…</p>
+      <div class="loading-progress-bar"><div class="loading-progress-fill" id="loading-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- ===== PASSWORD GATE OVERLAY ===== -->
+  <div class="password-overlay" id="password-overlay">
+    <div class="password-card">
+      <div class="password-lock-icon">🔒</div>
+      <h2>Authorized Access Only</h2>
+      <p>Please enter the access password to start the simulator.</p>
+      <form id="password-form" class="password-form" onsubmit="checkPassword(event)">
+        <div class="password-input-wrapper">
+          <input type="password" id="password-input" placeholder="Enter password" required autofocus autocomplete="current-password">
+          <div class="password-error" id="password-error" style="display: none;">❌ Incorrect password. Please try again.</div>
+        </div>
+        <button type="submit" class="password-submit-btn">Unlock Simulator</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== APP HEADER ===== -->
+  <header class="app-header hidden">
+    <div class="header-top">
+      <!-- Brand -->
+      <div class="header-brand">
+        <div class="logo-icon">🤖</div>
+        <h1>
+          Agentforce Specialist Simulator
+          <span>Salesforce Certified · 379 Practice Questions</span>
+        </h1>
+      </div>
+
+      <!-- Global Score Matrix -->
+      <div class="score-matrix">
+        <div class="score-pill" id="pill-progress">
+          📝 Progress: <span class="pill-value">0/379</span>
+        </div>
+        <div class="score-pill" id="pill-score">
+          🎯 Score: <span class="pill-value">0.0%</span>
+        </div>
+        <div class="score-pill" id="pill-status">
+          📊 Status: <span class="pill-value">Not Started</span>
+        </div>
+
+        <!-- Exam Timer (hidden by default) -->
+        <div class="exam-timer" id="exam-timer">
+          <span class="timer-icon">⏱️</span>
+          <span id="timer-text">01:45:00</span>
+        </div>
+
+        <!-- Submit Exam Button (hidden by default) -->
+        <button class="submit-exam-btn" id="submit-exam-btn">Submit Exam</button>
+      </div>
+
+      <!-- Mode Toggle -->
+      <div class="mode-toggle-wrapper">
+        <label for="mode-toggle">Study</label>
+        <input type="checkbox" class="toggle-switch" id="mode-toggle" aria-label="Toggle between Study and Exam mode">
+        <label for="mode-toggle">Exam</label>
+      </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <nav class="tab-nav" id="tab-nav" role="tablist" aria-label="Exam sections"></nav>
+  </header>
+
+  <!-- ===== MAIN CONTENT ===== -->
+  <main id="app-container" class="hidden">
+    <div class="tab-content">
+      <!-- Tab 0: Dashboard & Guide -->
+      <div class="tab-pane active" id="tab-0" role="tabpanel"></div>
+
+      <!-- Tab 1: AI Agents (35%) -->
+      <div class="tab-pane" id="tab-1" role="tabpanel"></div>
+
+      <!-- Tab 2: Prompt Engineering (20%) -->
+      <div class="tab-pane" id="tab-2" role="tabpanel"></div>
+
+      <!-- Tab 3: Data Cloud for Agentforce (20%) -->
+      <div class="tab-pane" id="tab-3" role="tabpanel"></div>
+
+      <!-- Tab 4: Development Lifecycle (20%) -->
+      <div class="tab-pane" id="tab-4" role="tabpanel"></div>
+
+      <!-- Tab 5: Multi-Agent Interoperability (5%) -->
+      <div class="tab-pane" id="tab-5" role="tabpanel"></div>
+
+      <!-- Tab 6: Full 379-Question Simulator -->
+      <div class="tab-pane" id="tab-6" role="tabpanel"></div>
+    </div>
+  </main>
+
+  <!-- ===== EXAM RESULTS OVERLAY ===== -->
+  <div class="results-overlay" id="results-overlay">
+    <div class="results-modal"></div>
+  </div>
+
+  <!-- ===== APPLICATION SCRIPT ===== -->
+  <script src="app.js?v=2.0"></script>
+
+</body>
+</html>
