@@ -7,33 +7,37 @@
 "use strict";
 
 // ---------- Category Constants ----------
+// ---------- Category Constants ----------
 const CATEGORIES = {
   AGENTS:       "AI Agents",
   PROMPT:       "Prompt Engineering",
-  DATA_CLOUD:   "Data Cloud for Agentforce",
-  LIFECYCLE:    "Development Lifecycle",
-  MULTI_AGENT:  "Multi-Agent Interoperability"
+  DATA_360:     "Data 360 Fundamentals",
+  TESTING:      "Testing, Deployment, & Maintenance",
+  GOVERNANCE:   "Governance & Observability",
+  MULTI_AGENT:  "Multi-Agent Orchestration"
 };
 
 // ---------- Category Exam Weights ----------
 const CATEGORY_WEIGHTS = {
   [CATEGORIES.AGENTS]:      "35%",
   [CATEGORIES.PROMPT]:      "20%",
-  [CATEGORIES.DATA_CLOUD]:  "20%",
-  [CATEGORIES.LIFECYCLE]:   "20%",
+  [CATEGORIES.DATA_360]:    "20%",
+  [CATEGORIES.TESTING]:     "10%",
+  [CATEGORIES.GOVERNANCE]:   "10%",
   [CATEGORIES.MULTI_AGENT]: "5%"
 };
 
 // ---------- Category to Tab Mapping ----------
-// Tab 0 = Dashboard, Tabs 1-5 = Categories, Tab 6 = Full Simulator
+// Tab 0 = Dashboard, Tabs 1-6 = Categories, Tab 7 = Full Simulator
 const TAB_CATEGORIES = [
   null,                     // Tab 0: Dashboard
   CATEGORIES.AGENTS,        // Tab 1
   CATEGORIES.PROMPT,        // Tab 2
-  CATEGORIES.DATA_CLOUD,    // Tab 3
-  CATEGORIES.LIFECYCLE,     // Tab 4
-  CATEGORIES.MULTI_AGENT,   // Tab 5
-  null                      // Tab 6: Full Simulator
+  CATEGORIES.DATA_360,      // Tab 3
+  CATEGORIES.TESTING,       // Tab 4
+  CATEGORIES.GOVERNANCE,    // Tab 5
+  CATEGORIES.MULTI_AGENT,   // Tab 6
+  null                      // Tab 7: Full Simulator
 ];
 
 // ---------- Category Classification Keywords ----------
@@ -43,14 +47,16 @@ const CATEGORY_KEYWORDS = {
     "model context protocol", "mcp", "agent-to-agent", "a2a protocol", "a2a ",
     "agent api", "multi-agent", "interoperability", "autonomous task delegation",
     "agent collaboration protocol", "open standard multi-agent",
-    "openapi specification", "agent card"
+    "openapi specification", "agent card", "single-agent", "soma", "architectural trade-off",
+    "a2a specification", "architectural trade-offs"
   ],
-  [CATEGORIES.DATA_CLOUD]: [
+  [CATEGORIES.DATA_360]: [
     "data cloud", "data library", "retriever", "vector database",
     "unstructured data", "chunking", "indexing", "ensemble retriever",
     "retrieval-augmented", "semantic search", "data ingestion",
     "file upload-based data library", "uploaded files", "rag ",
-    "individual retriever", "search index", "chunk", "embedding"
+    "individual retriever", "search index", "chunk", "embedding",
+    "data 360", "360 architecture", "foundational data 360", "data 360 fundamentals"
   ],
   [CATEGORIES.PROMPT]: [
     "prompt template", "prompt builder", "field generation",
@@ -59,16 +65,22 @@ const CATEGORY_KEYWORDS = {
     "trust layer", "einstein trust", "prompt preview", "resolution text",
     "response text", "dynamic field", "writing prompt", "prompt instruction",
     "prompt type", "ground prompt", "preview prompt",
-    "token limit", "token count", "tokens generated"
+    "token limit", "token count", "tokens generated", "access control", "model access", "prevent"
   ],
-  [CATEGORIES.LIFECYCLE]: [
+  [CATEGORIES.TESTING]: [
     "testing center", "agentforce testing", "test case",
     "sandbox to production", "deploy to production", "deployment",
-    "agent analytics", "monitor agent", "monitoring", "adoption",
-    "optimization", "session tracing", "health monitoring",
     "evaluation", "test coverage", "csv file with",
     "csv test", "debug log", "utterance", "production deployment",
-    "change set", "managed package deploy", "pilot program"
+    "change set", "managed package deploy", "pilot program",
+    "evaluations engine", "deployment rules", "agent testing center",
+    "evaluations engine workflows"
+  ],
+  [CATEGORIES.GOVERNANCE]: [
+    "agent monitoring", "management workflows", "agent analytics", "monitor agent",
+    "monitoring", "adoption", "optimization", "session tracing", "health monitoring",
+    "observability", "dashboard", "analytics dashboard", "optimization systems",
+    "governance", "observability", "management workflow"
   ],
   [CATEGORIES.AGENTS]: [
     "agent action", "custom agent", "standard topic", "custom topic",
@@ -79,7 +91,10 @@ const CATEGORY_KEYWORDS = {
     "agent builder", "agentforce agent", "service replies",
     "case classification", "work summaries", "knowledge replies",
     "action instruction", "agent's instruction",
-    "apex action", "flow action", "agent channel"
+    "apex action", "flow action", "agent channel", "hybrid reasoning",
+    "canvas view", "script view", "deterministic behavior", "expression",
+    "slack", "email", "voice", "digital experience", "agent api",
+    "building block", "agent mechanics"
   ]
 };
 
@@ -495,9 +510,10 @@ function renderTabButtons() {
     { label: "Dashboard", icon: "📊" },
     { label: "AI Agents", weight: "35%" },
     { label: "Prompt Engineering", weight: "20%" },
-    { label: "Data Cloud", weight: "20%" },
-    { label: "Dev Lifecycle", weight: "20%" },
-    { label: "Multi-Agent", weight: "5%" },
+    { label: "Data 360 Fundamentals", weight: "20%" },
+    { label: "Testing & Deploy", weight: "10%" },
+    { label: "Gov & Observability", weight: "10%" },
+    { label: "Multi-Agent Orchestration", weight: "5%" },
     { label: "Full Exam (379)", icon: "🎯" }
   ];
 
@@ -507,10 +523,10 @@ function renderTabButtons() {
     btn.dataset.tab = i;
 
     let countBadge = "";
-    if (i > 0 && i < 6) {
+    if (i > 0 && i < 7) {
       const count = state.questions.filter(q => q.category === TAB_CATEGORIES[i]).length;
       countBadge = `<span class="tab-badge">${count}</span>`;
-    } else if (i === 6) {
+    } else if (i === 7) {
       countBadge = `<span class="tab-badge">${state.questions.length}</span>`;
     }
 
@@ -534,11 +550,12 @@ function renderDashboard() {
   if (!pane) return;
 
   const topicList = [
-    { name: CATEGORIES.AGENTS, weight: "35%", desc: "Standard/custom topics, agent actions, Agent User security context, employee vs. service vs. sales agents", color: "var(--cat-agents)" },
-    { name: CATEGORIES.PROMPT, weight: "20%", desc: "Prompt Builder use cases, field generation/flex types, grounding techniques, prompt activation/execution, writing best practices", color: "var(--cat-prompt)" },
-    { name: CATEGORIES.DATA_CLOUD, weight: "20%", desc: "Data Library concepts, unstructured data grounding, chunking, indexing, retrievers (individual & ensemble)", color: "var(--cat-data)" },
-    { name: CATEGORIES.LIFECYCLE, weight: "20%", desc: "Testing agents via Agentforce Testing Center, evaluations, sandbox to production deployment, monitoring agent adoption", color: "var(--cat-lifecycle)" },
-    { name: CATEGORIES.MULTI_AGENT, weight: "5%", desc: "Model Context Protocol (MCP), agent-to-agent protocol, appropriate use cases for the Agent API", color: "var(--cat-multi)" }
+    { name: CATEGORIES.AGENTS, weight: "35%", desc: "Agent mechanics (script/building blocks), hybrid reasoning, canvas & script views, managing deterministic behaviors (filters, variables, expressions), standard/custom topics and actions, channel connections (digital experiences, email, voice, Slack), security runtime context, and Employee/Service Agent selection or Agent API usage.", color: "var(--cat-agents)" },
+    { name: CATEGORIES.PROMPT, weight: "20%", desc: "Prompt Builder use cases, access controls, field generation/flex templates, grounding techniques, activation/execution, prompt writing best practices, Trust Layer features, and model access prevention.", color: "var(--cat-prompt)" },
+    { name: CATEGORIES.DATA_360, weight: "20%", desc: "Agentforce Data Library concepts, foundational Data 360 architectures, chunking, indexing, and retrievers.", color: "var(--cat-data)" },
+    { name: CATEGORIES.TESTING, weight: "10%", desc: "Agent Testing Center workflows, evaluations engine, and sandbox-to-production deployment rules for agents and prompt templates.", color: "var(--cat-testing)" },
+    { name: CATEGORIES.GOVERNANCE, weight: "10%", desc: "Agent monitoring, management workflows, agent analytics dashboards, and optimization systems.", color: "var(--cat-gov)" },
+    { name: CATEGORIES.MULTI_AGENT, weight: "5%", desc: "Single-Agent (SOMA) architectural trade-offs for scale/control, open multi-agent protocols like Model Context Protocol (MCP), and Agent-to-Agent (A2A) specifications.", color: "var(--cat-multi)" }
   ];
 
   const totalQuestions = state.questions.length;
@@ -588,7 +605,7 @@ function renderDashboard() {
 
       <div class="dash-card full-width">
         <h3>📚 Exam Topic Breakdown</h3>
-        <p>The Agentforce Specialist exam covers 5 domains. Click each category tab to practice.</p>
+        <p>The Agentforce Specialist exam covers 6 domains. Click each category tab to practice.</p>
         <ul class="topic-checklist">
           ${topicList.map((t, idx) => {
             const count = state.questions.filter(q => q.category === t.name).length;
@@ -629,22 +646,22 @@ function renderDashboard() {
 // ============================================================
 
 function renderAllQuizTabs() {
-  // Tabs 1-5: Category-filtered, shuffled
-  for (let i = 1; i <= 5; i++) {
+  // Tabs 1-6: Category-filtered, shuffled
+  for (let i = 1; i <= 6; i++) {
     const cat = TAB_CATEGORIES[i];
     const questions = state.questions.filter(q => q.category === cat);
     const shuffled = shuffleQuestions(questions);
     generateShuffleMaps(shuffled);
     renderQuizTab(i, cat, shuffled);
   }
-  // Tab 6: Full simulator (shuffled copy of all questions)
+  // Tab 7: Full simulator (shuffled copy of all questions)
   const shuffled = shuffleQuestions(state.questions);
   generateShuffleMaps(shuffled);
-  renderQuizTab(6, "Full 379-Question Simulator", shuffled);
+  renderQuizTab(7, "Full 379-Question Simulator", shuffled);
 }
 
 function getTabQuestions(tabIndex) {
-  if (tabIndex === 6) return [...state.questions];
+  if (tabIndex === 7) return [...state.questions];
   const cat = TAB_CATEGORIES[tabIndex];
   return state.questions.filter(q => q.category === cat);
 }
@@ -653,7 +670,7 @@ function getTabQuestions(tabIndex) {
  * Re-shuffle a specific tab: reorder questions AND reshuffle all options.
  */
 window.shuffleTab = function(tabIndex) {
-  const title = tabIndex === 6
+  const title = tabIndex === 7
     ? "Full 379-Question Simulator"
     : TAB_CATEGORIES[tabIndex];
   const questions = getTabQuestions(tabIndex);
@@ -933,8 +950,8 @@ function updateScoreMatrix() {
 }
 
 function updateTabProgress() {
-  // Category tabs (1-5)
-  for (let i = 1; i <= 5; i++) {
+  // Category tabs (1-6)
+  for (let i = 1; i <= 6; i++) {
     const cat = TAB_CATEGORIES[i];
     const questions = state.questions.filter(q => q.category === cat);
     const answered = questions.filter(q => state.submitted[q.id]).length;
@@ -944,11 +961,18 @@ function updateTabProgress() {
 
   // Full simulator tab
   const allAnswered = Object.keys(state.submitted).length;
-  const el6 = $(`#progress-6`);
-  if (el6) el6.textContent = `${allAnswered} / ${state.questions.length} Answered`;
+  const el7 = $(`#progress-7`);
+  if (el7) el7.textContent = `${allAnswered} / ${state.questions.length} Answered`;
 
   // Update dashboard category progress bars
-  const topicKeys = [CATEGORIES.AGENTS, CATEGORIES.PROMPT, CATEGORIES.DATA_CLOUD, CATEGORIES.LIFECYCLE, CATEGORIES.MULTI_AGENT];
+  const topicKeys = [
+    CATEGORIES.AGENTS,
+    CATEGORIES.PROMPT,
+    CATEGORIES.DATA_360,
+    CATEGORIES.TESTING,
+    CATEGORIES.GOVERNANCE,
+    CATEGORIES.MULTI_AGENT
+  ];
   topicKeys.forEach((cat, idx) => {
     const questions = state.questions.filter(q => q.category === cat);
     const answered = questions.filter(q => state.submitted[q.id]).length;
@@ -990,7 +1014,7 @@ function toggleMode(isExam) {
     startTimer();
 
     // Switch to full exam tab
-    setActiveTab(6);
+    setActiveTab(7);
   } else {
     // Reset state for study mode
     state.answers = {};

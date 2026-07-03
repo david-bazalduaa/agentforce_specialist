@@ -22,8 +22,10 @@
   --cat-prompt-bg: #F3EEFF;
   --cat-data: #0D9488;
   --cat-data-bg: #EDFCFA;
-  --cat-lifecycle: #D97706;
-  --cat-lifecycle-bg: #FFF8EB;
+  --cat-testing: #D97706;
+  --cat-testing-bg: #FFF8EB;
+  --cat-gov: #4F46E5;
+  --cat-gov-bg: #EEF2FF;
   --cat-multi: #E11D48;
   --cat-multi-bg: #FFF0F3;
 
@@ -519,8 +521,9 @@ body {
 .topic-checklist li:nth-child(1) { border-left-color: var(--cat-agents); }
 .topic-checklist li:nth-child(2) { border-left-color: var(--cat-prompt); }
 .topic-checklist li:nth-child(3) { border-left-color: var(--cat-data); }
-.topic-checklist li:nth-child(4) { border-left-color: var(--cat-lifecycle); }
-.topic-checklist li:nth-child(5) { border-left-color: var(--cat-multi); }
+.topic-checklist li:nth-child(4) { border-left-color: var(--cat-testing); }
+.topic-checklist li:nth-child(5) { border-left-color: var(--cat-gov); }
+.topic-checklist li:nth-child(6) { border-left-color: var(--cat-multi); }
 
 .topic-checklist li:hover { background: var(--sf-blue-wash); }
 .topic-checklist input[type="checkbox"] {
