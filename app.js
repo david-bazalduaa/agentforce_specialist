@@ -296,7 +296,7 @@ const QUESTIONS = [
       "Einstein Reply Recommendations and Case Summaries",
       "Einstein Service Replies and Work Summaries"
     ],
-    "correctAnswerText": "Einstein Reply Recommendations and Case Classification",
+    "correctAnswerText": "Einstein Reply Recommendations and Case Summaries",
     "explanation": "Universal Containers (UC) aims to streamline customer support by addressing two goals: reducing inchat typing time for routine answers and minimizing post-chat analysis by auto-suggesting case field values. In Salesforce Agentforce for Service, Einstein Reply Recommendations and Case Classification (Option A) are the ideal combination to achieve this. Einstein Reply Recommendations: This feature uses AI to suggest pre-formulated responses based on chat context, historical data, and Knowledge articles. By providing agents with ready-to-use replies for common questions, it significantly reduces the time spent typing routine answers, directly addressing UC’s first goal. Case Classification: This capability leverages AI to analyze case details (e.g., chat transcripts) and suggest values for case fields (e.g., Subject, Priority, Resolution) during or after the interaction. By automating field population, it reduces post-chat analysis time, fulfilling UC’s second goal. Option B: While \"Einstein Reply Recommendations\" is correct for the first part, \"Case Summaries\" generates a summary of the case rather than suggesting specific field values. Summaries are useful for documentation but don’t directly reduce post-chat field entry time. Option C: \"Einstein Service Replies\" is not a distinct, documented feature in Agentforce (possibly a distractor for Reply Recommendations), and \"Work Summaries\" applies more to summarizing work orders or broader tasks, not case field suggestions in a chat context. Option A: This combination precisely targets both in-chat efficiency (Reply Recommendations) and post-chat automation (Case Classification). Thus, Option A is the correct answer for UC’s needs."
   },
   {
@@ -332,7 +332,7 @@ const QUESTIONS = [
       "It shows the response from the LLM based on the sample record.",
       "It shows which sensitive data is masked before it is sent to the LLM."
     ],
-    "correctAnswerText": "It shows the full text that is sent to the Trust Layer.",
+    "correctAnswerText": "It shows the response from the LLM based on the sample record.",
     "explanation": "In Salesforce Agentforce, when previewing a prompt template, the interface displays two outputs: Resolution and Response. These terms relate to how the prompt is processed and evaluated, particularly in the context of the Einstein Trust Layer, which ensures AI safety, compliance, and auditability. The Resolution text specifically refers to the full text that is sent to the Trust Layer for processing, monitoring, and governance (Option A). This includes the constructed prompt (with grounding data, instructions, and variables) as it’s submitted to the large language model (LLM), along with any Trust Layer interventions (e.g., masking, filtering) applied before or after LLM processing. It’s a comprehensive view of the input/output flow that the Trust Layer captures for auditing and compliance purposes. Option B: The \"Response\" output in the preview shows the LLM’s generated text based on the sample record, not the Resolution. Resolution encompasses more than just the LLM response—it includes the entire payload sent to the Trust Layer. Option C: While the Trust Layer does mask sensitive data (e.g., PII) as part of its guardrails, the Resolution text doesn’t specifically isolate \"which sensitive data is masked.\" Instead, it shows the full text, including any masked portions, as processed by the Trust Layer—not a separate masking log. Option A: This is correct, as Resolution provides a holistic view of the text sent to the Trust Layer, aligning with its role in monitoring and auditing the AI interaction. Thus, Option A accurately describes the purpose of the Resolution text in the prompt template preview."
   },
   {
@@ -2322,9 +2322,9 @@ const QUESTIONS = [
     "choices": [
       "Create a prompt template for product tutorials and guides.",
       "Add an Answer Questions custom field in the product object for tutorial instructions.",
-      "Publish product tutorials and guides as Knowledge articles. **==> picture [59 x 11] intentionally omitted <==**"
+      "Publish product tutorials and guides as Knowledge articles."
     ],
-    "correctAnswerText": "Publish product tutorials and guides as Knowledge articles. **==> picture [59 x 11] intentionally omitted <==**",
+    "correctAnswerText": "Publish product tutorials and guides as Knowledge articles.",
     "explanation": "Context of the QuestionUniversal Containers (UC) wants its support agents to use Agentforce to ask questions about product tutorials and product guides. Agentforce typically references knowledge sources to provide accurate and contextual responses. ## Why Knowledge Articles? Centralized Repository: Publishing product tutorials and guides as Knowledge articles in Salesforce ensures that the information is readily available and searchable by Agentforce. AI Integration: Salesforce’s AI solutions, including Agentforce, can often be configured to pull content directly from Salesforce Knowledge articles, giving users on-demand answers without manual data duplication. Maintenance & Updates: Storing content in Salesforce Knowledge simplifies content updates, versioning, and user permissions. ## Why Not the Other Options? Option A (Create a Prompt Template): Creating a prompt template alone does not solve how the underlying content (tutorials, guides) is stored or accessed by Agentforce. Prompt templates shape the queries/responses but do not provide the knowledge base. Option B (Add an Answer Questions Custom Field): A single field on the product object is insufficient for the depth of information found in tutorials and guides. It also lacks the robust search and userfriendly interface that Knowledge articles provide. ConclusionTo ensure Agentforce can effectively retrieve and deliver accurate information about products, publishing product tutorials and guides as Knowledge articles is the recommended approach. Salesforce Agentforce Specialist Reference & Documents by AI-driven assistants and support teams. Salesforce Agentforce Specialist Study GuideExplains best practices for feeding knowledge sources to generative AI and Agentforce."
   },
   {
@@ -2756,8 +2756,8 @@ const QUESTIONS = [
       "Record Summary",
       "Field Generation"
     ],
-    "correctAnswerText": "Record Summary",
-    "explanation": ""
+    "correctAnswerText": "Field Generation",
+    "explanation": "The documentation states that the Field Generation template is designed to populate a specific field on a record with generated output. “Field Generation: uses record context to autofill specific fields on a record page.” (Prompt Template Types) In this scenario, UC wants to generate a detailed product description based on product data and populate that description field on the product record (or equivalent). This is exactly a field generation usecase. The Sales Email template is for generating email content, and the Record Summary template is for summarising a record rather than generating a marketingstyle description. Therefore the correct answer is C."
   },
   {
     "id": 217,
