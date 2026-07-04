@@ -4967,29 +4967,30 @@ function restoreSubmittedState(tabIndex) {
     if (!state.submitted[qid]) return;
 
     const q = state.questions.find(x => x.id === qid);
-    const userAnswers = state.answers[qid] || [];
+    if (!q) return;
+
+    const selectedIdx = state.answers[qid];
     const shuffledOptions = state.shuffleMap[qid] || q.choices;
 
-    // Evaluate correct answer strictly based on string match of selected option text
-    const selectedLetter = userAnswers[0];
-    let selectedOptionText = "";
-    if (selectedLetter) {
-      const idx = selectedLetter.charCodeAt(0) - 65;
-      selectedOptionText = shuffledOptions[idx] || "";
-    }
-    const isCorrect = (selectedOptionText.trim() === q.correctAnswerText.trim());
+    // Resolve selected text from stored index
+    const selectedText = (selectedIdx !== undefined && selectedIdx !== null)
+      ? (shuffledOptions[selectedIdx] || "").trim()
+      : "";
+    const isCorrect = selectedText === q.correctAnswerText.trim();
 
-    const correctOptionIndex = shuffledOptions.findIndex(choice => choice.trim() === q.correctAnswerText.trim());
-    const correctLetter = correctOptionIndex !== -1 ? String.fromCharCode(65 + correctOptionIndex) : "";
+    // Find which index holds the correct answer
+    const correctIdx = shuffledOptions.findIndex(
+      c => c.trim() === q.correctAnswerText.trim()
+    );
 
     if (state.mode === "study") {
       card.classList.add(isCorrect ? "answered-correct" : "answered-incorrect");
       const options = card.querySelectorAll(".option-item");
       options.forEach(opt => {
-        const l = opt.dataset.letter;
+        const optIdx = parseInt(opt.dataset.idx);
         opt.classList.add("disabled");
-        if (l === correctLetter) opt.classList.add("correct");
-        else if (userAnswers.includes(l)) opt.classList.add("incorrect");
+        if (optIdx === correctIdx) opt.classList.add("correct");
+        else if (optIdx === selectedIdx) opt.classList.add("incorrect");
       });
       const btn = $(`#submit-${qid}`);
       if (btn) btn.style.display = "none";
@@ -5005,8 +5006,8 @@ function restoreSubmittedState(tabIndex) {
       }
       const options = card.querySelectorAll(".option-item");
       options.forEach(opt => {
-        const l = opt.dataset.letter;
-        opt.classList.toggle("selected", userAnswers.includes(l));
+        const optIdx = parseInt(opt.dataset.idx);
+        opt.classList.toggle("selected", optIdx === selectedIdx);
       });
     }
   });
@@ -5043,7 +5044,8 @@ function renderQuestionCard(q) {
     displayOptions = [...q.choices];
   }
 
-  const isMulti = q.multi || false;
+  // Letters are PURELY cosmetic — never used in scoring logic
+  const LETTERS = ['A', 'B', 'C', 'D'];
 
   return `
     <div class="question-card" id="qcard-${q.id}" data-qid="${q.id}">
@@ -5057,9 +5059,9 @@ function renderQuestionCard(q) {
       </div>
       <div class="options-list" id="options-${q.id}">
         ${displayOptions.map((optText, idx) => {
-          const letter = idx === 0 ? 'A' : idx === 1 ? 'B' : idx === 2 ? 'C' : 'D';
+          const letter = LETTERS[idx] || String.fromCharCode(65 + idx);
           return `
-            <div class="option-item" data-qid="${q.id}" data-letter="${letter}" onclick="selectOption(${q.id},'${letter}',${isMulti})">
+            <div class="option-item" data-qid="${q.id}" data-idx="${idx}" onclick="selectOption(${q.id},${idx})">
               <div class="option-radio"></div>
               <div class="option-letter">${letter}</div>
               <div class="option-text">${optText}</div>
@@ -5082,66 +5084,48 @@ function renderQuestionCard(q) {
 // SECTION 8: ANSWER SELECTION & SUBMISSION
 // ============================================================
 
-window.selectOption = function(qid, letter, isMulti) {
+window.selectOption = function(qid, selectedIdx) {
   if (state.submitted[qid] && state.mode === "study") return;
 
-  if (!state.answers[qid]) state.answers[qid] = [];
+  // Store the numeric index of the selected option
+  state.answers[qid] = selectedIdx;
 
-  const maxSelect = 1;
-
-  if (isMulti) {
-    const idx = state.answers[qid].indexOf(letter);
-    if (idx > -1) {
-      state.answers[qid].splice(idx, 1);
-    } else {
-      if (state.answers[qid].length < maxSelect) {
-        state.answers[qid].push(letter);
-      } else {
-        state.answers[qid].shift();
-        state.answers[qid].push(letter);
-      }
-    }
-  } else {
-    state.answers[qid] = [letter];
-  }
-
-  // Update UI
+  // Update UI — highlight only the selected option
   const options = $$(`#options-${qid} .option-item`);
   options.forEach(opt => {
-    const l = opt.dataset.letter;
-    opt.classList.toggle("selected", state.answers[qid].includes(l));
+    const optIdx = parseInt(opt.dataset.idx);
+    opt.classList.toggle("selected", optIdx === selectedIdx);
   });
 
   // Enable submit button
   const btn = $(`#submit-${qid}`);
-  if (btn) btn.disabled = state.answers[qid].length === 0;
+  if (btn) btn.disabled = false;
 };
 
 window.submitAnswer = function(qid) {
   if (state.submitted[qid]) return;
 
   const q = state.questions.find(x => x.id === qid);
-  const userAnswers = state.answers[qid] || [];
+  if (!q) return;
 
-  // Read literal text content of the selected option container from the DOM
-  const selectedOptionEl = document.querySelector(`#options-${qid} .option-item[data-letter="${userAnswers[0]}"]`);
-  const selectedChoiceText = selectedOptionEl ? selectedOptionEl.querySelector(".option-text").textContent : "";
+  const selectedIdx = state.answers[qid];
+  if (selectedIdx === undefined || selectedIdx === null) return;
 
-  // Evaluate directly against correctAnswerText
-  const isCorrect = (selectedChoiceText.trim() === q.correctAnswerText.trim());
+  const shuffledOptions = state.shuffleMap[q.id] || q.choices;
 
-  // Find correct letter dynamically by looking at the active options rendering
-  let correctLetter = "";
-  const optionItems = document.querySelectorAll(`#options-${qid} .option-item`);
-  optionItems.forEach(opt => {
-    const text = opt.querySelector(".option-text").textContent.trim();
-    if (text === q.correctAnswerText.trim()) {
-      correctLetter = opt.dataset.letter;
-    }
-  });
+  // Resolve selected text from the shuffled array using the stored index
+  const selectedText = (shuffledOptions[selectedIdx] || "").trim();
+
+  // Evaluate directly against correctAnswerText using trimmed string comparison
+  const isCorrect = selectedText === q.correctAnswerText.trim();
+
+  // Find which index holds the correct answer text in the shuffled array
+  const correctIdx = shuffledOptions.findIndex(
+    c => c.trim() === q.correctAnswerText.trim()
+  );
 
   if (state.mode === "exam") {
-    // In exam mode, just mark as submitted silently — no feedback
+    // In exam mode, mark as submitted silently — no feedback
     state.submitted[qid] = true;
     const btn = $(`#submit-${qid}`);
     if (btn) {
@@ -5161,16 +5145,16 @@ window.submitAnswer = function(qid) {
   const card = $(`#qcard-${qid}`);
   if (card) card.classList.add(isCorrect ? "answered-correct" : "answered-incorrect");
 
-  // Style options — highlight correct and incorrect
+  // Style options — highlight correct and incorrect by index
   const options = $$(`#options-${qid} .option-item`);
   options.forEach(opt => {
-    const l = opt.dataset.letter;
+    const optIdx = parseInt(opt.dataset.idx);
     opt.classList.add("disabled");
     opt.classList.remove("selected");
 
-    if (l === correctLetter) {
+    if (optIdx === correctIdx) {
       opt.classList.add("correct");
-    } else if (userAnswers.includes(l)) {
+    } else if (optIdx === selectedIdx) {
       opt.classList.add("incorrect");
     }
   });
@@ -5198,17 +5182,14 @@ function updateScoreMatrix() {
   Object.keys(state.submitted).forEach(qid => {
     const q = state.questions.find(x => x.id === parseInt(qid));
     if (!q) return;
-    const userAnswers = state.answers[qid] || [];
+
+    const selectedIdx = state.answers[qid];
+    if (selectedIdx === undefined || selectedIdx === null) return;
+
     const shuffledOptions = state.shuffleMap[q.id] || q.choices;
+    const selectedText = (shuffledOptions[selectedIdx] || "").trim();
 
-    const selectedLetter = userAnswers[0];
-    let selectedOptionText = "";
-    if (selectedLetter) {
-      const idx = selectedLetter.charCodeAt(0) - 65;
-      selectedOptionText = shuffledOptions[idx];
-    }
-
-    if (selectedOptionText === q.correctAnswerText) {
+    if (selectedText === q.correctAnswerText.trim()) {
       correctCount++;
     }
   });
@@ -5378,19 +5359,15 @@ function submitExam() {
 
   state.questions.forEach(q => {
     sectionResults[q.category].total++;
-    const userAnswers = state.answers[q.id] || [];
+    const selectedIdx = state.answers[q.id];
     const shuffledOptions = state.shuffleMap[q.id] || q.choices;
 
-    const selectedLetter = userAnswers[0];
-    let selectedOptionText = "";
-    if (selectedLetter) {
-      const idx = selectedLetter.charCodeAt(0) - 65;
-      selectedOptionText = shuffledOptions[idx];
-    }
-
-    if (selectedOptionText === q.correctAnswerText) {
-      totalCorrect++;
-      sectionResults[q.category].correct++;
+    if (selectedIdx !== undefined && selectedIdx !== null) {
+      const selectedText = (shuffledOptions[selectedIdx] || "").trim();
+      if (selectedText === q.correctAnswerText.trim()) {
+        totalCorrect++;
+        sectionResults[q.category].correct++;
+      }
     }
   });
 
@@ -5477,31 +5454,30 @@ window.closeResults = function() {
 
   // Show correct/incorrect feedback on all questions after exam review
   state.questions.forEach(q => {
-    const userAnswers = state.answers[q.id] || [];
+    const selectedIdx = state.answers[q.id];
     const shuffledOptions = state.shuffleMap[q.id] || q.choices;
 
-    const selectedLetter = userAnswers[0];
-    let selectedOptionText = "";
-    if (selectedLetter) {
-      const idx = selectedLetter.charCodeAt(0) - 65;
-      selectedOptionText = shuffledOptions[idx] || "";
-    }
+    // Resolve selected text from stored index
+    const selectedText = (selectedIdx !== undefined && selectedIdx !== null)
+      ? (shuffledOptions[selectedIdx] || "").trim()
+      : "";
+    const isCorrect = selectedText === q.correctAnswerText.trim();
 
-    const isCorrect = (selectedOptionText.trim() === q.correctAnswerText.trim());
-
-    const correctOptionIndex = shuffledOptions.findIndex(choice => choice.trim() === q.correctAnswerText.trim());
-    const correctLetter = correctOptionIndex !== -1 ? String.fromCharCode(65 + correctOptionIndex) : "";
+    // Find which index holds the correct answer
+    const correctIdx = shuffledOptions.findIndex(
+      c => c.trim() === q.correctAnswerText.trim()
+    );
 
     const card = $(`#qcard-${q.id}`);
     if (card) card.classList.add(isCorrect ? "answered-correct" : "answered-incorrect");
 
     const options = $$(`#options-${q.id} .option-item`);
     options.forEach(opt => {
-      const l = opt.dataset.letter;
+      const optIdx = parseInt(opt.dataset.idx);
       opt.classList.add("disabled");
       opt.classList.remove("selected");
-      if (l === correctLetter) opt.classList.add("correct");
-      else if (userAnswers.includes(l)) opt.classList.add("incorrect");
+      if (optIdx === correctIdx) opt.classList.add("correct");
+      else if (optIdx === selectedIdx) opt.classList.add("incorrect");
     });
 
     const explanation = $(`#explanation-${q.id}`);
