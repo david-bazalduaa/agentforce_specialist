@@ -385,6 +385,21 @@ function parseQuestionBlock(id, block) {
     return null;
   }
 
+  // Smart Parsing: Scan the explanation to identify the correct choice letter dynamically
+  let explanationLetter = "";
+  const match1 = explanation.match(/(?:correct answer is|correct answer is Option)\s+([A-D])/i);
+  if (match1) {
+    explanationLetter = match1[1].toUpperCase();
+  } else {
+    const match2 = explanation.match(/\b(?:Option|Answer)\s+([A-D])\b/i);
+    if (match2) {
+      explanationLetter = match2[1].toUpperCase();
+    }
+  }
+
+  // Use the discovered letter from the explanation if valid, otherwise fallback to the parsed 'answer' field
+  const finalAnswerLetter = (explanationLetter && options[explanationLetter]) ? explanationLetter : answer;
+
   // Build clean options choices array and correctAnswerText
   const choices = [];
   ["A", "B", "C", "D"].forEach(letter => {
@@ -393,7 +408,7 @@ function parseQuestionBlock(id, block) {
     }
   });
 
-  const correctAnswerText = options[answer] ? options[answer].trim() : "";
+  const correctAnswerText = options[finalAnswerLetter] ? options[finalAnswerLetter].trim() : "";
 
   return {
     id,
