@@ -4922,18 +4922,14 @@ function renderDashboard() {
 // ============================================================
 
 function renderAllQuizTabs() {
-  // Tabs 1-6: Category-filtered, shuffled
+  // Tabs 1-6: Category-filtered, original sequential order
   for (let i = 1; i <= 6; i++) {
     const cat = TAB_CATEGORIES[i];
     const questions = state.questions.filter(q => q.category === cat);
-    const shuffled = shuffleQuestions(questions);
-    generateShuffleMaps(shuffled);
-    renderQuizTab(i, cat, shuffled);
+    renderQuizTab(i, cat, questions);
   }
-  // Tab 7: Full simulator (shuffled copy of all questions)
-  const shuffled = shuffleQuestions(state.questions);
-  generateShuffleMaps(shuffled);
-  renderQuizTab(7, "Full 379-Question Simulator", shuffled);
+  // Tab 7: Full simulator (all questions in original order)
+  renderQuizTab(7, "Full 379-Question Simulator", [...state.questions]);
 }
 
 function getTabQuestions(tabIndex) {
@@ -5034,9 +5030,9 @@ function renderQuizTab(tabIndex, title, questions) {
 }
 
 /**
- * Renders a single question card using the SHUFFLED option order.
- * The displayed letters (A, B, C) correspond to the shuffled positions,
- * not the original positions in the markdown.
+ * Renders a single question card.
+ * Uses the shuffled option order from state.shuffleMap if available,
+ * otherwise falls back to the original sequential order from q.choices.
  */
 function renderQuestionCard(q) {
   let displayOptions = state.shuffleMap[q.id];
@@ -5559,8 +5555,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     return;
   }
 
-  // Store parsed questions in global state (shuffled initially)
-  state.questions = shuffleQuestions(questions);
+  // Store parsed questions in global state (original sequential order)
+  state.questions = questions;
 
   // Hide loading overlay
   const loadingOverlay = document.getElementById("loading-overlay");
