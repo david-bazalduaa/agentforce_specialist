@@ -385,21 +385,21 @@ function parseQuestionBlock(id, block) {
     return null;
   }
 
-  // Build options array with text and isCorrect flag
-  const optionsArray = [];
-  ["A", "B", "C"].forEach(letter => {
+  // Build clean options choices array and correctAnswerText
+  const choices = [];
+  ["A", "B", "C", "D"].forEach(letter => {
     if (options[letter]) {
-      optionsArray.push({
-        text: options[letter],
-        isCorrect: letter === answer
-      });
+      choices.push(options[letter]);
     }
   });
+
+  const correctAnswerText = options[answer] ? options[answer].trim() : "";
 
   return {
     id,
     text: questionText,
-    options: optionsArray,
+    choices: choices,
+    correctAnswerText: correctAnswerText,
     multi: false,
     explanation,
     category: null // Will be assigned by classifier
@@ -471,20 +471,10 @@ function shuffleQuestions(questions) {
  * Returns: { shuffledOptions: [{letter, text, originalLetter}], correctLetter: "X" }
  */
 function shuffleOptions(question) {
-  // Create a copy of the options array
-  const optionsCopy = question.options.map(opt => ({
-    text: opt.text,
-    isCorrect: opt.isCorrect
-  }));
-  fisherYatesShuffle(optionsCopy);
-
-  // Assign new positional letters
-  const letterSequence = ["A", "B", "C", "D"];
-  return optionsCopy.map((opt, idx) => ({
-    letter: letterSequence[idx],
-    text: opt.text,
-    isCorrect: opt.isCorrect
-  }));
+  // Create a copy of the choices array
+  const choicesCopy = [...question.choices];
+  fisherYatesShuffle(choicesCopy);
+  return choicesCopy;
 }
 
 /**
@@ -692,14 +682,19 @@ function restoreSubmittedState(tabIndex) {
 
     const q = state.questions.find(x => x.id === qid);
     const userAnswers = state.answers[qid] || [];
-    const shuffledOptions = state.shuffleMap[qid] || q.options;
+    const shuffledOptions = state.shuffleMap[qid] || q.choices;
 
-    // Evaluate correct answer strictly based on the isCorrect property
-    const selectedOption = shuffledOptions.find(opt => opt.letter === userAnswers[0]);
-    const isCorrect = selectedOption ? selectedOption.isCorrect : false;
+    // Evaluate correct answer strictly based on string match of selected option text
+    const selectedLetter = userAnswers[0];
+    let selectedOptionText = "";
+    if (selectedLetter) {
+      const idx = selectedLetter.charCodeAt(0) - 65;
+      selectedOptionText = shuffledOptions[idx];
+    }
+    const isCorrect = (selectedOptionText === q.correctAnswerText);
 
-    const correctOption = shuffledOptions.find(opt => opt.isCorrect);
-    const correctLetter = correctOption ? correctOption.letter : "";
+    const correctOptionIndex = shuffledOptions.indexOf(q.correctAnswerText);
+    const correctLetter = correctOptionIndex !== -1 ? String.fromCharCode(65 + correctOptionIndex) : "";
 
     if (state.mode === "study") {
       card.classList.add(isCorrect ? "answered-correct" : "answered-incorrect");
@@ -759,37 +754,32 @@ function renderQuizTab(tabIndex, title, questions) {
 function renderQuestionCard(q) {
   let displayOptions = state.shuffleMap[q.id];
   if (!displayOptions) {
-    // Fallback: assign letters sequentially
-    const letterSequence = ["A", "B", "C", "D"];
-    displayOptions = q.options.map((opt, idx) => ({
-      letter: letterSequence[idx],
-      text: opt.text,
-      isCorrect: opt.isCorrect
-    }));
+    displayOptions = [...q.choices];
   }
 
   const isMulti = q.multi || false;
-  const correctCount = q.options.filter(opt => opt.isCorrect).length;
 
   return `
     <div class="question-card" id="qcard-${q.id}" data-qid="${q.id}">
       <div class="question-header">
-        <div class="question-number ${isMulti ? 'multi-select' : ''}">Q${q.id}</div>
+        <div class="question-number">Q${q.id}</div>
         <div class="question-body">
           <div class="question-text">
             ${q.text}
-            ${isMulti ? `<span class="multi-badge">Select ${correctCount}</span>` : ''}
           </div>
         </div>
       </div>
       <div class="options-list" id="options-${q.id}">
-        ${displayOptions.map(opt => `
-          <div class="option-item" data-qid="${q.id}" data-letter="${opt.letter}" onclick="selectOption(${q.id},'${opt.letter}',${isMulti})">
-            <div class="option-radio ${isMulti ? 'checkbox-style' : ''}"></div>
-            <div class="option-letter">${opt.letter}</div>
-            <div class="option-text">${opt.text}</div>
-          </div>
-        `).join("")}
+        ${displayOptions.map((optText, idx) => {
+          const letter = String.fromCharCode(65 + idx);
+          return `
+            <div class="option-item" data-qid="${q.id}" data-letter="${letter}" onclick="selectOption(${q.id},'${letter}',${isMulti})">
+              <div class="option-radio"></div>
+              <div class="option-letter">${letter}</div>
+              <div class="option-text">${optText}</div>
+            </div>
+          `;
+        }).join("")}
       </div>
       <div class="question-actions" id="actions-${q.id}">
         <button class="btn-submit primary" id="submit-${q.id}" disabled onclick="submitAnswer(${q.id})">Submit Answer</button>
@@ -811,9 +801,7 @@ window.selectOption = function(qid, letter, isMulti) {
 
   if (!state.answers[qid]) state.answers[qid] = [];
 
-  const q = state.questions.find(x => x.id === qid);
-  const correctCount = q.options.filter(opt => opt.isCorrect).length;
-  const maxSelect = correctCount || 1;
+  const maxSelect = 1;
 
   if (isMulti) {
     const idx = state.answers[qid].indexOf(letter);
@@ -848,14 +836,22 @@ window.submitAnswer = function(qid) {
 
   const q = state.questions.find(x => x.id === qid);
   const userAnswers = state.answers[qid] || [];
-  const shuffledOptions = state.shuffleMap[qid] || q.options;
+  const shuffledOptions = state.shuffleMap[qid] || q.choices;
 
-  // Evaluate correct answer strictly based on the isCorrect property of the selected option
-  const selectedOption = shuffledOptions.find(opt => opt.letter === userAnswers[0]);
-  const isCorrect = selectedOption ? selectedOption.isCorrect : false;
+  // Retrieve the selected option's text by converting the letter back to an index
+  const selectedLetter = userAnswers[0];
+  let selectedOptionText = "";
+  if (selectedLetter) {
+    const idx = selectedLetter.charCodeAt(0) - 65;
+    selectedOptionText = shuffledOptions[idx];
+  }
 
-  const correctOption = shuffledOptions.find(opt => opt.isCorrect);
-  const correctLetter = correctOption ? correctOption.letter : "";
+  // Compare text content directly
+  const isCorrect = (selectedOptionText === q.correctAnswerText);
+
+  // Find correct letter dynamically
+  const correctOptionIndex = shuffledOptions.indexOf(q.correctAnswerText);
+  const correctLetter = correctOptionIndex !== -1 ? String.fromCharCode(65 + correctOptionIndex) : "";
 
   if (state.mode === "exam") {
     // In exam mode, just mark as submitted silently — no feedback
@@ -876,7 +872,7 @@ window.submitAnswer = function(qid) {
   state.submitted[qid] = true;
 
   const card = $(`#qcard-${qid}`);
-  card.classList.add(isCorrect ? "answered-correct" : "answered-incorrect");
+  if (card) card.classList.add(isCorrect ? "answered-correct" : "answered-incorrect");
 
   // Style options — highlight correct and incorrect
   const options = $$(`#options-${qid} .option-item`);
@@ -916,10 +912,16 @@ function updateScoreMatrix() {
     const q = state.questions.find(x => x.id === parseInt(qid));
     if (!q) return;
     const userAnswers = state.answers[qid] || [];
-    const shuffledOptions = state.shuffleMap[q.id] || q.options;
+    const shuffledOptions = state.shuffleMap[q.id] || q.choices;
 
-    const selectedOption = shuffledOptions.find(opt => opt.letter === userAnswers[0]);
-    if (selectedOption && selectedOption.isCorrect) {
+    const selectedLetter = userAnswers[0];
+    let selectedOptionText = "";
+    if (selectedLetter) {
+      const idx = selectedLetter.charCodeAt(0) - 65;
+      selectedOptionText = shuffledOptions[idx];
+    }
+
+    if (selectedOptionText === q.correctAnswerText) {
       correctCount++;
     }
   });
@@ -1090,10 +1092,16 @@ function submitExam() {
   state.questions.forEach(q => {
     sectionResults[q.category].total++;
     const userAnswers = state.answers[q.id] || [];
-    const shuffledOptions = state.shuffleMap[q.id] || q.options;
+    const shuffledOptions = state.shuffleMap[q.id] || q.choices;
 
-    const selectedOption = shuffledOptions.find(opt => opt.letter === userAnswers[0]);
-    if (selectedOption && selectedOption.isCorrect) {
+    const selectedLetter = userAnswers[0];
+    let selectedOptionText = "";
+    if (selectedLetter) {
+      const idx = selectedLetter.charCodeAt(0) - 65;
+      selectedOptionText = shuffledOptions[idx];
+    }
+
+    if (selectedOptionText === q.correctAnswerText) {
       totalCorrect++;
       sectionResults[q.category].correct++;
     }
@@ -1183,13 +1191,19 @@ window.closeResults = function() {
   // Show correct/incorrect feedback on all questions after exam review
   state.questions.forEach(q => {
     const userAnswers = state.answers[q.id] || [];
-    const shuffledOptions = state.shuffleMap[q.id] || q.options;
+    const shuffledOptions = state.shuffleMap[q.id] || q.choices;
 
-    const selectedOption = shuffledOptions.find(opt => opt.letter === userAnswers[0]);
-    const isCorrect = selectedOption ? selectedOption.isCorrect : false;
+    const selectedLetter = userAnswers[0];
+    let selectedOptionText = "";
+    if (selectedLetter) {
+      const idx = selectedLetter.charCodeAt(0) - 65;
+      selectedOptionText = shuffledOptions[idx];
+    }
 
-    const correctOption = shuffledOptions.find(opt => opt.isCorrect);
-    const correctLetter = correctOption ? correctOption.letter : "";
+    const isCorrect = (selectedOptionText === q.correctAnswerText);
+
+    const correctOptionIndex = shuffledOptions.indexOf(q.correctAnswerText);
+    const correctLetter = correctOptionIndex !== -1 ? String.fromCharCode(65 + correctOptionIndex) : "";
 
     const card = $(`#qcard-${q.id}`);
     if (card) card.classList.add(isCorrect ? "answered-correct" : "answered-incorrect");
