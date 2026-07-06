@@ -9,21 +9,21 @@
 // ---------- Category Constants ----------
 // ---------- Category Constants ----------
 const CATEGORIES = {
-  AGENTS:       "AI Agents",
-  PROMPT:       "Prompt Engineering",
-  DATA_360:     "Data 360 Fundamentals",
-  TESTING:      "Testing, Deployment, & Maintenance",
-  GOVERNANCE:   "Governance & Observability",
-  MULTI_AGENT:  "Multi-Agent Orchestration"
+  AGENTS: "AI Agents",
+  PROMPT: "Prompt Engineering",
+  DATA_360: "Data 360 Fundamentals",
+  TESTING: "Testing, Deployment, & Maintenance",
+  GOVERNANCE: "Governance & Observability",
+  MULTI_AGENT: "Multi-Agent Orchestration"
 };
 
 // ---------- Category Exam Weights ----------
 const CATEGORY_WEIGHTS = {
-  [CATEGORIES.AGENTS]:      "35%",
-  [CATEGORIES.PROMPT]:      "20%",
-  [CATEGORIES.DATA_360]:    "20%",
-  [CATEGORIES.TESTING]:     "10%",
-  [CATEGORIES.GOVERNANCE]:   "10%",
+  [CATEGORIES.AGENTS]: "35%",
+  [CATEGORIES.PROMPT]: "20%",
+  [CATEGORIES.DATA_360]: "20%",
+  [CATEGORIES.TESTING]: "10%",
+  [CATEGORIES.GOVERNANCE]: "10%",
   [CATEGORIES.MULTI_AGENT]: "5%"
 };
 
@@ -129,7 +129,7 @@ function djb2(str) {
   return (hash >>> 0).toString(16);
 }
 
-window.checkPassword = function(e) {
+window.checkPassword = function (e) {
   if (e) e.preventDefault();
   const input = document.getElementById("password-input");
   const errorEl = document.getElementById("password-error");
@@ -1005,7 +1005,7 @@ const QUESTIONS = [
       "Invoke a flow which makes a call to external data to create a Knowledge article.",
       "Generate a Knowledge article based off the prompts that the agent enters to create steps to cancel flights."
     ],
-    "correctAnswerText": "Generate a Knowledge article based off the prompts that the agent enters to create steps to cancel flights.",
+    "correctAnswerText": "Execute tasks based on available actions, answering questions using information from accessible Knowledge articles.",
     "explanation": "In this scenario, the Agent capability that best helps the agent is its ability to execute tasks based on available actions and answer questions using data from Knowledge articles. Agent can assist the service agent by providing relevant Knowledge articles on canceling and rebooking flights, ensuring that the agent has access to the correct steps and procedures directly within the workflow. This feature leverages the agent’s existing context (the travel itinerary) and provides actionable insights or next steps from the relevant Knowledge articles to help the agent quickly resolve the customer’s needs. The other options are incorrect: B refers to invoking a flow to create a Knowledge article, which is unrelated to the task of retrieving existing Knowledge articles. C focuses on generating Knowledge articles, which is not the immediate need for this situation where the agent requires guidance on existing procedures. Salesforce Documentation on Agent Trailhead Module on Einstein for Service"
   },
   {
@@ -4884,8 +4884,8 @@ function renderDashboard() {
         <p>The Agentforce Specialist exam covers 6 domains. Click each category tab to practice.</p>
         <ul class="topic-checklist">
           ${topicList.map((t, idx) => {
-            const count = state.questions.filter(q => q.category === t.name).length;
-            return `
+    const count = state.questions.filter(q => q.category === t.name).length;
+    return `
             <li>
               <input type="checkbox" id="chk-${idx}">
               <div>
@@ -4894,7 +4894,7 @@ function renderDashboard() {
               </div>
               <span class="topic-weight" style="color:${t.color}">${t.weight} · ${count} Qs</span>
             </li>`;
-          }).join("")}
+  }).join("")}
         </ul>
       </div>
 
@@ -4903,14 +4903,14 @@ function renderDashboard() {
         <p>Your completion rate per study domain.</p>
         <div class="cat-progress-grid">
           ${topicList.map((t, idx) => {
-            const catId = `cat-progress-${idx}`;
-            return `
+    const catId = `cat-progress-${idx}`;
+    return `
             <div class="cat-progress-item" style="border-left-color:${t.color}">
               <div class="cp-label">${t.name}</div>
               <div class="cp-bar"><div class="cp-fill" id="${catId}-fill" style="background:${t.color}"></div></div>
               <div class="cp-text" id="${catId}-text">0% complete</div>
             </div>`;
-          }).join("")}
+  }).join("")}
         </div>
       </div>
     </div>
@@ -4941,7 +4941,7 @@ function getTabQuestions(tabIndex) {
 /**
  * Re-shuffle a specific tab: reorder questions AND reshuffle all options.
  */
-window.shuffleTab = function(tabIndex) {
+window.shuffleTab = function (tabIndex) {
   const title = tabIndex === 7
     ? "Full 379-Question Simulator"
     : TAB_CATEGORIES[tabIndex];
@@ -5055,15 +5055,15 @@ function renderQuestionCard(q) {
       </div>
       <div class="options-list" id="options-${q.id}">
         ${displayOptions.map((optText, idx) => {
-          const letter = LETTERS[idx] || String.fromCharCode(65 + idx);
-          return `
+    const letter = LETTERS[idx] || String.fromCharCode(65 + idx);
+    return `
             <div class="option-item" data-qid="${q.id}" data-idx="${idx}" onclick="selectOption(${q.id},${idx})">
               <div class="option-radio"></div>
               <div class="option-letter">${letter}</div>
               <div class="option-text">${optText}</div>
             </div>
           `;
-        }).join("")}
+  }).join("")}
       </div>
       <div class="question-actions" id="actions-${q.id}">
         <button class="btn-submit primary" id="submit-${q.id}" disabled onclick="submitAnswer(${q.id})">Submit Answer</button>
@@ -5080,7 +5080,7 @@ function renderQuestionCard(q) {
 // SECTION 8: ANSWER SELECTION & SUBMISSION
 // ============================================================
 
-window.selectOption = function(qid, selectedIdx) {
+window.selectOption = function (qid, selectedIdx) {
   if (state.submitted[qid] && state.mode === "study") return;
 
   // Store the numeric index of the selected option
@@ -5098,7 +5098,7 @@ window.selectOption = function(qid, selectedIdx) {
   if (btn) btn.disabled = false;
 };
 
-window.submitAnswer = function(qid) {
+window.submitAnswer = function (qid) {
   if (state.submitted[qid]) return;
 
   const q = state.questions.find(x => x.id === qid);
@@ -5427,15 +5427,15 @@ function showResultsModal(answered, correct, score, passed, sections) {
       </thead>
       <tbody>
         ${Object.entries(sections).map(([name, data]) => {
-          const pct = data.total > 0 ? ((data.correct / data.total) * 100).toFixed(0) : 0;
-          const weight = CATEGORY_WEIGHTS[name] || "—";
-          return `<tr>
+    const pct = data.total > 0 ? ((data.correct / data.total) * 100).toFixed(0) : 0;
+    const weight = CATEGORY_WEIGHTS[name] || "—";
+    return `<tr>
             <td>${name}</td>
             <td>${weight}</td>
             <td>${data.correct}/${data.total} (${pct}%)</td>
             <td style="color:${pct >= 68 ? 'var(--color-correct)' : 'var(--color-incorrect)'}">${pct >= 68 ? "✓ Pass" : "✕ Needs Work"}</td>
           </tr>`;
-        }).join("")}
+  }).join("")}
       </tbody>
     </table>
 
@@ -5445,7 +5445,7 @@ function showResultsModal(answered, correct, score, passed, sections) {
   overlay.classList.add("visible");
 }
 
-window.closeResults = function() {
+window.closeResults = function () {
   $(".results-overlay").classList.remove("visible");
 
   // Show correct/incorrect feedback on all questions after exam review
