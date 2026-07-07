@@ -5043,6 +5043,9 @@ function renderQuestionCard(q) {
   // Letters are PURELY cosmetic — never used in scoring logic
   const LETTERS = ['A', 'B', 'C', 'D'];
 
+  const isExamMode = state.mode === "exam";
+  const actionsStyle = isExamMode ? "display: none;" : "";
+
   return `
     <div class="question-card" id="qcard-${q.id}" data-qid="${q.id}">
       <div class="question-header">
@@ -5065,7 +5068,7 @@ function renderQuestionCard(q) {
           `;
   }).join("")}
       </div>
-      <div class="question-actions" id="actions-${q.id}">
+      <div class="question-actions" id="actions-${q.id}" style="${actionsStyle}">
         <button class="btn-submit primary" id="submit-${q.id}" disabled onclick="submitAnswer(${q.id})">Submit Answer</button>
       </div>
       <div class="explanation-panel" id="explanation-${q.id}">
@@ -5093,9 +5096,16 @@ window.selectOption = function (qid, selectedIdx) {
     opt.classList.toggle("selected", optIdx === selectedIdx);
   });
 
-  // Enable submit button
-  const btn = $(`#submit-${qid}`);
-  if (btn) btn.disabled = false;
+  if (state.mode === "exam") {
+    // Automatically mark as submitted/saved in exam mode so user doesn't have to click "Submit Answer"
+    state.submitted[qid] = true;
+    updateScoreMatrix();
+    updateTabProgress();
+  } else {
+    // Enable submit button in Study mode
+    const btn = $(`#submit-${qid}`);
+    if (btn) btn.disabled = false;
+  }
 };
 
 window.submitAnswer = function (qid) {
@@ -5259,7 +5269,7 @@ function toggleMode(isExam) {
   state.mode = isExam ? "exam" : "study";
 
   const timer = $(".exam-timer");
-  const submitExam = $(".submit-exam-btn");
+  const submitExamBtn = $(".submit-exam-btn");
 
   if (isExam) {
     // Reset state for exam mode
@@ -5276,7 +5286,7 @@ function toggleMode(isExam) {
 
     // Start timer
     timer.classList.add("visible");
-    submitExam.classList.add("visible");
+    submitExamBtn.classList.add("visible");
     startTimer();
 
     // Switch to full exam tab
@@ -5290,7 +5300,7 @@ function toggleMode(isExam) {
     stopTimer();
     timer.classList.remove("visible");
     timer.classList.remove("warning");
-    submitExam.classList.remove("visible");
+    submitExamBtn.classList.remove("visible");
 
     renderAllQuizTabs();
     updateScoreMatrix();
