@@ -4965,35 +4965,29 @@ function restoreSubmittedState(tabIndex) {
     const q = state.questions.find(x => x.id === qid);
     if (!q) return;
 
-    const selectedIdx = state.answers[qid];
-    const shuffledOptions = state.shuffleMap[qid] || q.choices;
-
-    // Resolve selected text from stored index
-    const selectedText = (selectedIdx !== undefined && selectedIdx !== null)
-      ? (shuffledOptions[selectedIdx] || "").trim()
-      : "";
-    const isCorrect = selectedText === q.correctAnswerText.trim();
-
-    // Find which index holds the correct answer
-    const correctIdx = shuffledOptions.findIndex(
-      c => c.trim() === q.correctAnswerText.trim()
-    );
+    const selectedText = state.answers[qid];
+    const isCorrect = (selectedText !== undefined && selectedText !== null)
+      ? selectedText.trim() === q.correctAnswerText.trim()
+      : false;
 
     if (state.mode === "study") {
       card.classList.add(isCorrect ? "answered-correct" : "answered-incorrect");
       const options = card.querySelectorAll(".option-item");
       options.forEach(opt => {
-        const optIdx = parseInt(opt.dataset.idx);
+        const optText = opt.querySelector(".option-text").textContent.trim();
         opt.classList.add("disabled");
-        if (optIdx === correctIdx) opt.classList.add("correct");
-        else if (optIdx === selectedIdx) opt.classList.add("incorrect");
+        if (optText === q.correctAnswerText.trim()) {
+          opt.classList.add("correct");
+        } else if (selectedText && optText === selectedText.trim()) {
+          opt.classList.add("incorrect");
+        }
       });
-      const btn = $(`#submit-${qid}`);
+      const btn = card.querySelector(`.btn-submit`);
       if (btn) btn.style.display = "none";
-      const explanation = $(`#explanation-${qid}`);
+      const explanation = card.querySelector(`.explanation-panel`);
       if (explanation) explanation.classList.add("visible");
     } else {
-      const btn = $(`#submit-${qid}`);
+      const btn = card.querySelector(`.btn-submit`);
       if (btn) {
         btn.textContent = "✓ Saved";
         btn.disabled = true;
@@ -5002,8 +4996,8 @@ function restoreSubmittedState(tabIndex) {
       }
       const options = card.querySelectorAll(".option-item");
       options.forEach(opt => {
-        const optIdx = parseInt(opt.dataset.idx);
-        opt.classList.toggle("selected", optIdx === selectedIdx);
+        const optText = opt.querySelector(".option-text").textContent.trim();
+        opt.classList.toggle("selected", selectedText && optText === selectedText.trim());
       });
     }
   });
@@ -5086,11 +5080,18 @@ function renderQuestionCard(q) {
 window.selectOption = function (qid, selectedIdx) {
   if (state.submitted[qid] && state.mode === "study") return;
 
-  // Store the numeric index of the selected option
-  state.answers[qid] = selectedIdx;
+  const activeTabPane = $(`#tab-${state.activeTab}`);
+  if (!activeTabPane) return;
 
-  // Update UI — highlight only the selected option
-  const options = $$(`#options-${qid} .option-item`);
+  const optionEl = activeTabPane.querySelector(`#options-${qid} .option-item[data-idx="${selectedIdx}"]`);
+  if (!optionEl) return;
+  const selectedText = optionEl.querySelector(".option-text").textContent.trim();
+
+  // Store the string of the selected option
+  state.answers[qid] = selectedText;
+
+  // Update UI in active tab — highlight only the selected option
+  const options = activeTabPane.querySelectorAll(`#options-${qid} .option-item`);
   options.forEach(opt => {
     const optIdx = parseInt(opt.dataset.idx);
     opt.classList.toggle("selected", optIdx === selectedIdx);
@@ -5102,8 +5103,8 @@ window.selectOption = function (qid, selectedIdx) {
     updateScoreMatrix();
     updateTabProgress();
   } else {
-    // Enable submit button in Study mode
-    const btn = $(`#submit-${qid}`);
+    // Enable submit button in Study mode in the active tab pane
+    const btn = activeTabPane.querySelector(`#submit-${qid}`);
     if (btn) btn.disabled = false;
   }
 };
@@ -5114,26 +5115,16 @@ window.submitAnswer = function (qid) {
   const q = state.questions.find(x => x.id === qid);
   if (!q) return;
 
-  const selectedIdx = state.answers[qid];
-  if (selectedIdx === undefined || selectedIdx === null) return;
+  const selectedText = state.answers[qid];
+  if (selectedText === undefined || selectedText === null) return;
 
-  const shuffledOptions = state.shuffleMap[q.id] || q.choices;
-
-  // Resolve selected text from the shuffled array using the stored index
-  const selectedText = (shuffledOptions[selectedIdx] || "").trim();
-
-  // Evaluate directly against correctAnswerText using trimmed string comparison
-  const isCorrect = selectedText === q.correctAnswerText.trim();
-
-  // Find which index holds the correct answer text in the shuffled array
-  const correctIdx = shuffledOptions.findIndex(
-    c => c.trim() === q.correctAnswerText.trim()
-  );
+  const isCorrect = selectedText.trim() === q.correctAnswerText.trim();
+  const activeTabPane = $(`#tab-${state.activeTab}`);
 
   if (state.mode === "exam") {
     // In exam mode, mark as submitted silently — no feedback
     state.submitted[qid] = true;
-    const btn = $(`#submit-${qid}`);
+    const btn = activeTabPane ? activeTabPane.querySelector(`#submit-${qid}`) : null;
     if (btn) {
       btn.textContent = "✓ Saved";
       btn.disabled = true;
@@ -5148,28 +5139,28 @@ window.submitAnswer = function (qid) {
   // Study mode: show immediate feedback
   state.submitted[qid] = true;
 
-  const card = $(`#qcard-${qid}`);
+  const card = activeTabPane ? activeTabPane.querySelector(`#qcard-${qid}`) : null;
   if (card) card.classList.add(isCorrect ? "answered-correct" : "answered-incorrect");
 
-  // Style options — highlight correct and incorrect by index
-  const options = $$(`#options-${qid} .option-item`);
+  // Style options by text content
+  const options = activeTabPane ? activeTabPane.querySelectorAll(`#options-${qid} .option-item`) : [];
   options.forEach(opt => {
-    const optIdx = parseInt(opt.dataset.idx);
+    const optText = opt.querySelector(".option-text").textContent.trim();
     opt.classList.add("disabled");
     opt.classList.remove("selected");
 
-    if (optIdx === correctIdx) {
+    if (optText === q.correctAnswerText.trim()) {
       opt.classList.add("correct");
-    } else if (optIdx === selectedIdx) {
+    } else if (optText === selectedText.trim()) {
       opt.classList.add("incorrect");
     }
   });
 
   // Hide submit button, show explanation
-  const btn = $(`#submit-${qid}`);
+  const btn = activeTabPane ? activeTabPane.querySelector(`#submit-${qid}`) : null;
   if (btn) btn.style.display = "none";
 
-  const explanation = $(`#explanation-${qid}`);
+  const explanation = activeTabPane ? activeTabPane.querySelector(`#explanation-${qid}`) : null;
   if (explanation) explanation.classList.add("visible");
 
   updateScoreMatrix();
@@ -5189,13 +5180,10 @@ function updateScoreMatrix() {
     const q = state.questions.find(x => x.id === parseInt(qid));
     if (!q) return;
 
-    const selectedIdx = state.answers[qid];
-    if (selectedIdx === undefined || selectedIdx === null) return;
+    const selectedText = state.answers[qid];
+    if (selectedText === undefined || selectedText === null) return;
 
-    const shuffledOptions = state.shuffleMap[q.id] || q.choices;
-    const selectedText = (shuffledOptions[selectedIdx] || "").trim();
-
-    if (selectedText === q.correctAnswerText.trim()) {
+    if (selectedText.trim() === q.correctAnswerText.trim()) {
       correctCount++;
     }
   });
@@ -5365,12 +5353,10 @@ function submitExam() {
 
   state.questions.forEach(q => {
     sectionResults[q.category].total++;
-    const selectedIdx = state.answers[q.id];
-    const shuffledOptions = state.shuffleMap[q.id] || q.choices;
+    const selectedText = state.answers[q.id];
 
-    if (selectedIdx !== undefined && selectedIdx !== null) {
-      const selectedText = (shuffledOptions[selectedIdx] || "").trim();
-      if (selectedText === q.correctAnswerText.trim()) {
+    if (selectedText !== undefined && selectedText !== null) {
+      if (selectedText.trim() === q.correctAnswerText.trim()) {
         totalCorrect++;
         sectionResults[q.category].correct++;
       }
@@ -5460,37 +5446,35 @@ window.closeResults = function () {
 
   // Show correct/incorrect feedback on all questions after exam review
   state.questions.forEach(q => {
-    const selectedIdx = state.answers[q.id];
-    const shuffledOptions = state.shuffleMap[q.id] || q.choices;
+    const selectedText = state.answers[q.id];
+    const isCorrect = (selectedText !== undefined && selectedText !== null)
+      ? selectedText.trim() === q.correctAnswerText.trim()
+      : false;
 
-    // Resolve selected text from stored index
-    const selectedText = (selectedIdx !== undefined && selectedIdx !== null)
-      ? (shuffledOptions[selectedIdx] || "").trim()
-      : "";
-    const isCorrect = selectedText === q.correctAnswerText.trim();
+    // Find the cards across all tabs in the DOM
+    const cards = $$(`#qcard-${q.id}`);
+    cards.forEach(card => {
+      card.classList.add(isCorrect ? "answered-correct" : "answered-incorrect");
 
-    // Find which index holds the correct answer
-    const correctIdx = shuffledOptions.findIndex(
-      c => c.trim() === q.correctAnswerText.trim()
-    );
+      const options = card.querySelectorAll(".option-item");
+      options.forEach(opt => {
+        const optText = opt.querySelector(".option-text").textContent.trim();
+        opt.classList.add("disabled");
+        opt.classList.remove("selected");
+        
+        if (optText === q.correctAnswerText.trim()) {
+          opt.classList.add("correct");
+        } else if (selectedText && optText === selectedText.trim()) {
+          opt.classList.add("incorrect");
+        }
+      });
 
-    const card = $(`#qcard-${q.id}`);
-    if (card) card.classList.add(isCorrect ? "answered-correct" : "answered-incorrect");
+      const explanation = card.querySelector(`.explanation-panel`);
+      if (explanation) explanation.classList.add("visible");
 
-    const options = $$(`#options-${q.id} .option-item`);
-    options.forEach(opt => {
-      const optIdx = parseInt(opt.dataset.idx);
-      opt.classList.add("disabled");
-      opt.classList.remove("selected");
-      if (optIdx === correctIdx) opt.classList.add("correct");
-      else if (optIdx === selectedIdx) opt.classList.add("incorrect");
+      const btn = card.querySelector(`.btn-submit`);
+      if (btn) btn.style.display = "none";
     });
-
-    const explanation = $(`#explanation-${q.id}`);
-    if (explanation) explanation.classList.add("visible");
-
-    const btn = $(`#submit-${q.id}`);
-    if (btn) btn.style.display = "none";
   });
 };
 
