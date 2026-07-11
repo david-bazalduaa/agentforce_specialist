@@ -2648,7 +2648,7 @@ const QUESTIONS = [
       "Prompt Template Manager",
       "Prompt Template User"
     ],
-    "correctAnswerText": "Prompt Execute User",
+    "correctAnswerText": "Prompt Template User",
     "explanation": "Comprehensive and Detailed Explanation From Exact Extract of AgentForce Documents: According to the AgentForce Permissions and Role Management Guide, permission sets control the level of access users have to Prompt Templates — which define how the reasoning engine interprets and generates responses. AgentForce distinguishes between users who create or manage templates and those who only execute or use them during interactions. The Prompt Execute User permission set is designed for users who can invoke and run prompts but cannot create, modify, or delete prompt templates. This role is intended for front-line users such as sales reps, service agents, or support staff who utilize preconfigured templates in daily workflows without altering them. The Prompt Template Manager permission set (Option B) grants full administrative access — allowing users to create, edit, and delete templates. This is reserved for system administrators or AgentForce specialists responsible for managing prompt configurations. The Prompt Template User permission set (Option C) provides limited management capabilities, enabling viewing and cloning of templates but still allowing minor modifications, which does not meet the stated restriction. Therefore, to ensure sales reps can only use but not edit or create prompt templates, the correct permission set is Option A – Prompt Execute User. Reference: AgentForce Security and Permissions Documentation — “Prompt Template Access Levels and Role Assignment.”"
   },
   {
@@ -5461,7 +5461,7 @@ window.closeResults = function () {
         const optText = opt.querySelector(".option-text").textContent.trim();
         opt.classList.add("disabled");
         opt.classList.remove("selected");
-        
+
         if (optText === q.correctAnswerText.trim()) {
           opt.classList.add("correct");
         } else if (selectedText && optText === selectedText.trim()) {
