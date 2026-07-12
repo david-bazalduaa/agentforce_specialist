@@ -1461,7 +1461,7 @@ const QUESTIONS = [
       "Manually add the hyperparameters to the new template.",
       "Revert to using the standard template without modifications."
     ],
-    "correctAnswerText": "Manually add the hyperparameters to the new template.",
+    "correctAnswerText": "Use Model Playground to create a model configuration with the specified parameters.",
     "explanation": "When Universal Containers creates a new Sales Email prompt template using the \"Save As\" function, missing hyperparameters can result in different outputs. To ensure the new prompt produces comparable results to the standard Sales Email prompt, the Agentforce Specialist should manually add the necessary hyperparameters to the new template. Hyperparameters like Temperature, Frequency Penalty, and Presence Penalty directly affect how the AI generates responses. Ensuring that these are consistent with the standard template will result in similar outputs. Option A (Model Playground) is not necessary here, as it focuses on fine-tuning models, not adjusting templates directly. Option C (Reverting to the standard template) does not solve the issue of customizing the prompt template. For more information, refer to Prompt Builder documentation on configuring hyperparameters in custom templates."
   },
   {
