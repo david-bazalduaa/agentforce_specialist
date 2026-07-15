@@ -4857,7 +4857,7 @@ function restoreSubmittedState(tabIndex) {
 
     const selectedText = state.answers[qid];
     const isCorrect = (selectedText !== undefined && selectedText !== null)
-      ? selectedText.trim() === q.correctAnswerText.trim()
+      ? compareAnswers(selectedText, q.correctAnswerText)
       : false;
 
     if (state.mode === "study") {
@@ -4866,9 +4866,9 @@ function restoreSubmittedState(tabIndex) {
       options.forEach(opt => {
         const optText = opt.querySelector(".option-text").textContent.trim();
         opt.classList.add("disabled");
-        if (optText === q.correctAnswerText.trim()) {
+        if (compareAnswers(optText, q.correctAnswerText)) {
           opt.classList.add("correct");
-        } else if (selectedText && optText === selectedText.trim()) {
+        } else if (selectedText && compareAnswers(optText, selectedText)) {
           opt.classList.add("incorrect");
         }
       });
@@ -5008,7 +5008,7 @@ window.submitAnswer = function (qid) {
   const selectedText = state.answers[qid];
   if (selectedText === undefined || selectedText === null) return;
 
-  const isCorrect = selectedText.trim() === q.correctAnswerText.trim();
+  const isCorrect = compareAnswers(selectedText, q.correctAnswerText);
   const activeTabPane = $(`#tab-${state.activeTab}`);
 
   if (state.mode === "exam") {
@@ -5039,9 +5039,9 @@ window.submitAnswer = function (qid) {
     opt.classList.add("disabled");
     opt.classList.remove("selected");
 
-    if (optText === q.correctAnswerText.trim()) {
+    if (compareAnswers(optText, q.correctAnswerText)) {
       opt.classList.add("correct");
-    } else if (optText === selectedText.trim()) {
+    } else if (compareAnswers(optText, selectedText)) {
       opt.classList.add("incorrect");
     }
   });
@@ -5073,7 +5073,7 @@ function updateScoreMatrix() {
     const selectedText = state.answers[qid];
     if (selectedText === undefined || selectedText === null) return;
 
-    if (selectedText.trim() === q.correctAnswerText.trim()) {
+    if (compareAnswers(selectedText, q.correctAnswerText)) {
       correctCount++;
     }
   });
@@ -5246,7 +5246,7 @@ function submitExam() {
     const selectedText = state.answers[q.id];
 
     if (selectedText !== undefined && selectedText !== null) {
-      if (selectedText.trim() === q.correctAnswerText.trim()) {
+      if (compareAnswers(selectedText, q.correctAnswerText)) {
         totalCorrect++;
         sectionResults[q.category].correct++;
       }
@@ -5338,7 +5338,7 @@ window.closeResults = function () {
   state.questions.forEach(q => {
     const selectedText = state.answers[q.id];
     const isCorrect = (selectedText !== undefined && selectedText !== null)
-      ? selectedText.trim() === q.correctAnswerText.trim()
+      ? compareAnswers(selectedText, q.correctAnswerText)
       : false;
 
     // Find the cards across all tabs in the DOM
@@ -5352,9 +5352,9 @@ window.closeResults = function () {
         opt.classList.add("disabled");
         opt.classList.remove("selected");
 
-        if (optText === q.correctAnswerText.trim()) {
+        if (compareAnswers(optText, q.correctAnswerText)) {
           opt.classList.add("correct");
-        } else if (selectedText && optText === selectedText.trim()) {
+        } else if (selectedText && compareAnswers(optText, selectedText)) {
           opt.classList.add("incorrect");
         }
       });
@@ -5415,6 +5415,22 @@ function bindEvents() {
 // ============================================================
 // SECTION 14: UTILITY FUNCTIONS
 // ============================================================
+
+function compareAnswers(a, b) {
+  if (a === undefined || a === null || b === undefined || b === null) return false;
+  
+  const normalize = (str) => {
+    return str
+      .trim()
+      .toLowerCase()
+      .replace(/[\u2018\u2019\u00b4`']/g, "'") // curly to straight single quotes
+      .replace(/[\u201c\u201d"]/g, '"')         // curly to straight double quotes
+      .replace(/[.,;:!?]/g, "")                 // remove punctuation
+      .replace(/\s+/g, " ");                    // normalize spacing
+  };
+  
+  return normalize(a) === normalize(b);
+}
 
 function arraysEqual(a, b) {
   if (a.length !== b.length) return false;
