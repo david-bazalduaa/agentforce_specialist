@@ -1411,7 +1411,7 @@ const QUESTIONS = [
       "The run command is only valid when nested inside reasoning.actions blocks to pass parameters; the Agentforce Specialist must list it under reasoning.actions for the large language model (LLM) to access it.",
       "Listing an action under reasoning actions makes it a subjective tool that the large language model (LLM) decides whether to call; calling it with the run command forces guaranteed execution every time."
     ],
-    "correctAnswerText": "Listing an action under reasoning.actions makes it a subjective tool that the large language model (LLM) decides whether to call; calling it with the run command forces guaranteed execution every time.",
+    "correctAnswerText": "Listing an action under reasoning actions makes it a subjective tool that the large language model (LLM) decides whether to call; calling it with the run command forces guaranteed execution every time.",
     "explanation": "The correct answer is C. In Agent Script, listing a tool in the reasoning.actions block exposes it to the reasoning engine as a callable tool. Salesforce documentation states that tools in reasoning.actions are executable functions the LLM can choose to call based on the tool description and current context. That is not deterministic enough for a mandatory eligibility check. By contrast, Salesforce’s Agent Script action reference states that to ensure an action runs every time a subagent runs, the specialist should use run @actions.<action_name> in the reasoning block. Therefore, run is the correct mechanism for guaranteed execution, while reasoning.actions provides LLM-selectable tool availability."
   },
   {
