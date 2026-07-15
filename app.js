@@ -452,7 +452,7 @@ const QUESTIONS = [
       "The Flow execution mode for the agent is set to System Context Without Sharing.",
       "Token-Based User Verification has been enabled, which in turn respects all sharing and field-level security."
     ],
-    "correctAnswerText": "Credential-Based User Verification has been enabled, which in turn respects all sharing and fieldlevel security.",
+    "correctAnswerText": "Credential-Based User Verification has been enabled, which in turn respects all sharing and field-level security.",
     "explanation": "The correct answer is A. Credential-Based User Verification ties the service interaction to the authenticated Experience Cloud user, so record access and record changes are evaluated through that verified user’s security context. That explains why audit fields such as Last Modified By show the Community User rather than the generic Agent User. This is not an error; it is the expected governance outcome when the agent is operating with verified user identity. Option B is incorrect because system-context flow execution would explain bypassed sharing behavior, not why the authenticated user appears in audit fields. Option C is incorrect because the scenario explicitly states Credential-Based User Verification, not token-based verification. For regulated environments, this behavior is valuable because audit trails show which verified customer identity caused the record update."
   },
   {
@@ -5418,7 +5418,7 @@ function bindEvents() {
 
 function compareAnswers(a, b) {
   if (a === undefined || a === null || b === undefined || b === null) return false;
-  
+
   const normalize = (str) => {
     return str
       .trim()
@@ -5428,7 +5428,7 @@ function compareAnswers(a, b) {
       .replace(/[.,;:!?]/g, "")                 // remove punctuation
       .replace(/\s+/g, " ");                    // normalize spacing
   };
-  
+
   return normalize(a) === normalize(b);
 }
 
