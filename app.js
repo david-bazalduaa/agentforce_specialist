@@ -320,7 +320,7 @@ const QUESTIONS = [
       "Audit subagent instructions for semantic competition and implement deterministic filters to guide the planner's selection.",
       "Create a Router sub-flow that uses a Decision element to manually assign every incoming request to a specific subagent."
     ],
-    "correctAnswerText": "Audit subagent instructions for semantic competition and implement deterministic filters to guide the planner’s selection.",
+    "correctAnswerText": "Audit subagent instructions for semantic competition and implement deterministic filters to guide the planner's selection.",
     "explanation": "The correct answer is B because the issue is subagent misclassification caused by overlapping instructions or unclear routing boundaries. Agentforce routing depends on the agent understanding the purpose, scope, and availability of each subagent. If the billing and troubleshooting subagents are semantically competing, the correct fix is to tighten their descriptions, remove overlap, and use filters where deterministic gating is required. Option A is a weak keyword-ban strategy and will break on natural language variation. Option C creates rigid decision-tree routing and undermines the flexible, non-linear behavior expected from Agentforce agents. The best solution preserves autonomous reasoning while adding deterministic constraints where business routing must be protected. Filters and variables are specifically intended to control when subagents or actions are available."
   },
   {
