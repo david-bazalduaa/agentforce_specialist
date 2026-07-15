@@ -58,7 +58,9 @@ Correct Answer: A
 
 Universal Containers (UC) is expanding its Agentforce for Service capabilities to include case management. For security purposes, UC wants the agent to verify a customer 's identity before providing any case-related information. The verification must be deterministic-ensuring that no case details are shared unless identity verification has been successfully completed. Which approach best meets this requirement?
 
-A. Use keywords such as "Always" and "Never" to write clear logic in Topic Instructions to verify user identity before providing any case information, B. Create a variable to store the verification status, set it as output from a "Verify Identity" action, and apply a filter so any case-related actions only run when the variable confirms verification.
+A. Use keywords such as "Always" and "Never" to write clear logic in Topic Instructions to verify user identity before providing any case information.
+
+B. Create a variable to store the verification status, set it as output from a "Verify Identity" action, and apply a filter so any case-related actions only run when the variable confirms verification.
 
 C. Store the verification status in a custom variable and set a global instruction that the agent should check this variable before sharing case information.
 

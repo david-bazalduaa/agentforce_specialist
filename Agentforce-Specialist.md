@@ -9300,13 +9300,7 @@ deterministic-ensuring that no case details are shared unless identity verificat
 
 Which approach best meets this requirement? 
 
-A. Use keywords such as "Always" and "Never" to write clear logic in Topic Instructions to verify user 
-
-Questions & Answers PDF 
-
-P-305 
-
-identity before providing any case information, 
+A. Use keywords such as "Always" and "Never" to write clear logic in Topic Instructions to verify user identity before providing any case information. 
 
 B. Create a variable to store the verification status, set it as output from a “Verify Identity” action, and apply a filter so any case-related actions only run when the variable confirms verification. 
 
