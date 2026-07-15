@@ -581,7 +581,7 @@ const QUESTIONS = [
     "choices": [
       "Agent will trigger a flow that utilizes a prompt template to generate the message.",
       "Agent will perform an HTTP callout to an LLM provider.",
-      "Agent analyzes the user 's request and LLM technology is used to generate and display the appropriate response."
+      "Agent analyzes the user's request and LLM technology is used to generate and display the appropriate response."
     ],
     "correctAnswerText": "Agent analyzes the user's request and LLM technology is used to generate and display the appropriate response.",
     "explanation": "Agent is designed to enhance user interaction within Salesforce by leveraging Large Language Models (LLMs) to process and respond to user inquiries. When a user submits a request, Agent analyzes the input using natural language processing techniques. It then utilizes LLM technology to generate an appropriate and contextually relevant response, which is displayed directly to the user within the Salesforce interface. Option C accurately describes this process. Agent does not necessarily trigger a flow (Option A) or perform an HTTP callout to an LLM provider (Option B) for each user request. Instead, it integrates LLM capabilities to provide immediate and intelligent responses, facilitating a broad range of user requests. Reference: Salesforce Agentforce Specialist Documentation - Agent Overview: Details how Agent employs LLMs to interpret user inputs and generate responses within the Salesforce ecosystem. Salesforce Help - How Agent Works: Explains the underlying mechanisms of how Agent processes user requests using AI technologies."
