@@ -200,7 +200,7 @@ const QUESTIONS = [
       "Define a context variable for the fee. Execute a flow as an agent action to calculate the fee, assign the flow's output to that context variable, and have the agent reference that variable in its responses",
       "Provide the mathematical formula for the restocking fee in the agent's system instructions and instruct it to remember the result for reuse"
     ],
-    "correctAnswerText": "Define a context variable for the fee. Execute a flow as an agent action to calculate the fee, assign the flow’s output to that context variable, and have the agent reference that variable in its responses",
+    "correctAnswerText": "Define a context variable for the fee. Execute a flow as an agent action to calculate the fee, assign the flow's output to that context variable, and have the agent reference that variable in its responses",
     "explanation": "The correct answer is B because deterministic fee calculation and reuse require state management, not conversational memory. The fee should be calculated by a Flow action, then stored in a context variable so the same validated value can be referenced later in the conversation. This prevents the large language model from recalculating, rounding differently, or hallucinating a new value during the refund summary. Option A is incomplete because simply exposing a Flow output once does not guarantee stable reuse throughout the session. Option C is unsafe because system instructions do not enforce calculation accuracy or persistence. Salesforce guidance states that variables can be used in filters, instructions, and action inputs, and Agent Script supports deterministic logic, setting variables, and running actions."
   },
   {
@@ -368,7 +368,7 @@ const QUESTIONS = [
       "Store the user's verification status in a custom variable and apply an available when filter condition to the account lookup action, making the action invisible to the reasoning engine until the variable evaluates to true.",
       "Add explicit natural language instructions within the subagent definition instructing the large language model to always prioritize the customer verification action before proceeding to the account lookup action."
     ],
-    "correctAnswerText": "Store the user’s verification status in a custom variable and apply an available when filter condition to the account lookup action, making the action invisible to the reasoning engine until the variable evaluates to true.",
+    "correctAnswerText": "Store the user's verification status in a custom variable and apply an available when filter condition to the account lookup action, making the action invisible to the reasoning engine until the variable evaluates to true.",
     "explanation": "The correct answer is B because sensitive account lookup must be gated deterministically. A custom variable can store verification status, and an available when filter can make the lookup action invisible until that status is true. This prevents the LLM from even seeing or selecting the protected action before verification succeeds. Option A misuses Prompt Defense; prompt defense helps protect against unsafe prompt behavior, but it does not replace action-level authorization. Option C is unreliable because natural language instructions are still interpreted by the model and do not enforce execution control. Salesforce release guidance states that filters can be created for topics and actions so the agent can use them only when conditions are met. Variables are also used in filters and action control."
   },
   {
@@ -500,7 +500,7 @@ const QUESTIONS = [
       "Check that the agent has the PDF file field permission access for the data library.",
       "Verify the retriever 's filter criteria and data source connection."
     ],
-    "correctAnswerText": "Verify the retriever's filter criteria and data source connection.",
+    "correctAnswerText": "Verify the retriever 's filter criteria and data source connection.",
     "explanation": "Why is \"Verify the retriever's filter criteria and data source connection\" the correct answer? If agent answers are not satisfactory when using PDF files as a knowledge source, the issue is likely caused by: Retriever misconfiguration If filters are too broad or too restrictive, AI may fail to find relevant information. Checking filter logic and retrieval scope helps improve accuracy. Incorrect data source connection If the retriever is not properly linked to the PDF storage location, it may fail to retrieve relevant information. Ensuring a stable connection between Salesforce Data Cloud and the retriever prevents retrieval failures. Parsing Issues with PDF Files If PDFs are not properly indexed, AI may struggle to extract relevant content. Ensuring structured document formatting improves AI comprehension. Why Not the Other Options? ❌ A. Analyze the data mapping between source fields and Data Cloud object fields. Incorrect because data mapping issues primarily affect structured CRM data, not PDF-based knowledge sources. The issue likely stems from retrieval settings, not field mapping. - ❌ B. Check that the agent has the PDF file field permission access for the data library. Incorrect because permission access issues would prevent AI from accessing PDFs entirely rather than causing poor response quality. AI can still generate responses, even if they are inaccurate, which means the issue lies in retriever settings, not permissions. Agentforce Specialist Reference Salesforce AI Specialist Material details how retriever filters and data sources impact AI-generated answers . Salesforce Certification Guide mentions the importance of verifying retriever configurations for accurate knowledge retrieval ."
   },
   {
@@ -512,7 +512,7 @@ const QUESTIONS = [
       "Include a direct instruction asking the LLM to role-play as a specific character, for example, \"Act as an empathetic customer support agent,\" to provide context and establish the tone.",
       "Include multiple-choice picklist questions within the prompt template to systematically test and correct the LLM's understanding of the desired context before generating the output."
     ],
-    "correctAnswerText": "Include a direct instruction asking the LLM to role-play as a specific character, for example, “Act as an empathetic customer support agent,” to provide context and establish the tone.",
+    "correctAnswerText": "Include a direct instruction asking the LLM to role-play as a specific character, for example, \"Act as an empathetic customer support agent,\" to provide context and establish the tone.",
     "explanation": "The correct answer is B because role-based prompting is the proper technique for shaping tone and behavior without changing the underlying foundation model. A prompt instruction such as “Act as an empathetic customer support agent” gives the LLM a role, audience, communication style, and business context. This supports consistent professional and empathetic output while still using Salesforce’s standard foundation models. Option A is wrong because permanently altering model tone with past interaction data suggests fine-tuning or model customization, which UC does not allow. Option C is not a practical prompt engineering technique for tone control; picklist questions do not establish a consistent response persona. Salesforce prompt engineering guidance specifically describes role-based prompting as a way to align tone, expertise, and behavior."
   },
   {
@@ -631,7 +631,7 @@ const QUESTIONS = [
       "Uploading only a small set of manually written prompts",
       "Relying on live customer logs to capture phrasing diversity after deployment"
     ],
-    "correctAnswerText": "Al-generated synthetic test utterances based on natural language variations",
+    "correctAnswerText": "AI-generated synthetic test utterances based on natural language variations",
     "explanation": "The AgentForce Testing Center Functional Overview highlights that AI-powered synthetic test utterances allow teams to automatically generate natural language variations of existing test prompts. This feature helps validate whether the agent can correctly classify and respond to diverse user phrasing — a crucial step in ensuring conversational robustness and intent coverage. By expanding each test case into multiple paraphrased utterances, the Testing Center evaluates how well the reasoning engine generalizes user intent, improving reliability before deployment. Option B is insufficient because manually written prompts cover limited language diversity. Option C waits for live feedback, which exposes end users to unvalidated agent behavior and is not a predeployment testing method. Therefore, the correct choice is Option A – AI-generated synthetic test utterances based on natural language variations. Reference: AgentForce Testing Center Guide — “Enhancing Intent Coverage with Synthetic Utterance Generation.”"
   },
   {
@@ -799,7 +799,7 @@ const QUESTIONS = [
       "Use only change sets because the Salesforce CLI does not currently support the deployment of agent-related metadata.",
       "Deploy flows, Apex, and all agent-related items using either change sets or the Salesforce CLI /Metadata API."
     ],
-    "correctAnswerText": "Deploy flows, Apex, and all agent-related items using either change sets or the Salesforce CLI/Metadata API.",
+    "correctAnswerText": "Deploy flows, Apex, and all agent-related items using either change sets or the Salesforce CLI /Metadata API.",
     "explanation": "Why is \"Deploy flows, Apex, and all agent-related items using either change sets or the Salesforce CLI/Metadata API\" the correct answer? When deploying an Agentforce Agent with multiple topics and Agent Actions that use flows and Apex, a complete deployment solution is required. Change sets and the Salesforce CLI/Metadata API support the deployment of flows, Apex code, and agent-related metadata. Key Considerations for Agentforce Deployments: Supports Deployment of All Required Components Agentforce Agents include flows, Apex classes, topics, and agent actions. Change sets and Salesforce CLI/Metadata API allow deployment of all these components together, ensuring a smooth transition to production. Agentforce Metadata Can Be Deployed Using Standard Tools Change Sets: Allows admins to move configurations, custom objects, and metadata between Salesforce environments. Salesforce CLI/Metadata API: Enables scripted deployments, automating the transfer of Agentforce configurations. Ensures a Complete Migration Without Manual Configuration Deploying all components together reduces the risk of misconfiguration. Automating deployments using the Metadata API ensures consistency across environments. Why Not the Other Options? ❌ A. Deploy the flows and Apex using normal deployment tools and manually create the agentrelated items in production. Incorrect because manually creating agent-related items in production introduces risk and inconsistency. This approach is error-prone and time-consuming, especially for large Agentforce deployments. ❌ B. Use only change sets because the Salesforce CLI does not currently support the deployment of agent-related metadata. Incorrect because Salesforce CLI and Metadata API fully support Agentforce deployments. Change sets are useful but limited in large-scale, automated deployments. Agentforce Specialist Reference Salesforce AI Specialist Material confirms that Agentforce metadata (flows, actions, and topics) can be deployed using Change Sets or the Metadata API ."
   },
   {
@@ -1315,7 +1315,7 @@ const QUESTIONS = [
       "Use an ensemble retriever to stitch multiple chunks back together dynamically.",
       "Switch the search index configuration to use only keyword search scoring."
     ],
-    "correctAnswerText": "Change the search index’s parser from the default to Docling.",
+    "correctAnswerText": "Change the search index's parser from the default to Docling.",
     "explanation": "The correct answer is A. The problem is not that the retriever lacks enough sources; the problem is that the document parser is breaking structured tabular content into chunks that lose layout context. Salesforce Data 360 includes parsing and preprocessing options for unstructured content, and the Docling parser is specifically intended for stronger layout understanding, including table-heavy or complex document structures. Option B is wrong because an ensemble retriever searches multiple retrievers or sources; it does not repair poor chunking caused by weak document parsing. Option C is also wrong because keyword-only scoring changes retrieval ranking behavior but does not preserve table relationships during ingestion. The correct fix is upstream: improve parsing before vectorization and indexing so the chunks preserve table context for RAG grounding."
   },
   {
@@ -1519,7 +1519,7 @@ const QUESTIONS = [
       "Create a separate subagent named Password Reset, configure it with an action that invokes the Flow, and pass the identity verification variable as context so the subagent's instructions can reference the verified status before proceeding.",
       "Add an instruction to the identity verification subagent directing the agent to trigger the password reset Flow once identity is confirmed, and store the customer's reset intent in a conversation variable so the reasoning engine can reference it when deciding whether to proceed."
     ],
-    "correctAnswerText": "Create a separate subagent named Password Reset, configure it with an action that invokes the Flow, and pass the identity verification variable as context so the subagent’s instructions can reference the verified status before proceeding.",
+    "correctAnswerText": "Create a separate subagent named Password Reset, configure it with an action that invokes the Flow, and pass the identity verification variable as context so the subagent's instructions can reference the verified status before proceeding.",
     "explanation": "The correct answer is B because password reset is a distinct task and should be modeled as a separate, focused subagent with its own action. The existing identity verification subagent can establish the verified state, and that state can be passed or referenced as context by the Password Reset subagent. This keeps responsibilities clean: one subagent verifies identity, and the other performs the reset through the existing Flow. Option A overloads the identity verification subagent with reset execution, weakening separation of concerns. Option C relies mainly on instructions and intent storage, which is less reliable for a gated operational process. Agentforce design guidance supports using variables to track state across turns and subagents, while actions can call Flows and use outputs for subsequent reasoning."
   },
   {
@@ -1551,9 +1551,9 @@ const QUESTIONS = [
     "category": "AI Agents",
     "question": "Universal Containers is developing an Agentforce Service Agent to handle a complex, multi-step customer onboarding process. To better organize the conversational logic, the Agentforce Specialist splits the process across two distinct subagents and places the setup configuration for the second step inside the before\\_reasoning block of the new subagent. During testing, when the agent transitions to this new subagent mid-conversation, the conversation occasionally stalls or behaves unexpectedly. What is the risk the Agentforce Specialist must consider regarding the execution timing of before\\_reasoning?",
     "choices": [
-      "The before\\_reasoning block will only run once and sets the immutable variables.",
-      "The before\\_reasoning block runs at the start of the next turn after a transition.",
-      "The before\\_reasoning block only runs on the very first turn after the agent launches."
+      "The before_reasoning block will only run once and sets the immutable variables.",
+      "The before_reasoning block runs at the start of the next turn after a transition.",
+      "The before_reasoning block only runs on the very first turn after the agent launches."
     ],
     "correctAnswerText": "The before_reasoning block runs at the start of the next turn after a transition.",
     "explanation": "The correct answer is B. before_reasoning is a deterministic lifecycle block, but it must be understood in relation to the subagent parse/turn lifecycle. If configuration needed immediately after a transition is placed only in the target subagent’s before_reasoning block, the specialist must account for when that target subagent’s next processing cycle begins. Treating before_reasoning as a global setup block or assuming it has already run can leave required variables or context unavailable, which explains stalls or inconsistent behavior. Option A is wrong because before_reasoning is not a once-only immutable initializer. Option C is wrong because it is not limited to the first turn after the whole agent launches. The safer design is to initialize required state explicitly before transition or guard the target subagent’s setup logic carefully."
@@ -1687,7 +1687,7 @@ const QUESTIONS = [
       "The internal Sales Productivity Agent executes actions using the authenticated Salesforce employee's own permissions, while the customer-facing Service Agent executes actions as a dedicated Einstein Service Agent User with its own permission set.",
       "Both the internal Sales Productivity Agent and the customer-facing Service Agent execute actions as a dedicated Einstein Service Agent User with its own permission set that is configured as required for the agent."
     ],
-    "correctAnswerText": "The internal Sales Productivity Agent executes actions using the authenticated Salesforce employee’s own permissions, while the customer-facing Service Agent executes actions as a dedicated Einstein Service Agent User with its own permission set.",
+    "correctAnswerText": "The internal Sales Productivity Agent executes actions using the authenticated Salesforce employee's own permissions, while the customer-facing Service Agent executes actions as a dedicated Einstein Service Agent User with its own permission set.",
     "explanation": "The correct answer is B. Internal employee-facing agents operate within the authenticated Salesforce user’s access model, so actions must respect the employee’s profile, permission sets, sharing, and field-level security. A customer-facing Service Agent deployed through Experience Cloud is different: it is configured around an agent user/service agent execution identity, and Salesforce guidance stresses assigning the correct permissions to that agent user rather than relying on the site guest profile. Option A is wrong because a logged-in Experience Cloud deployment should not be treated as a guest-user execution model by default. Option C is also wrong because it incorrectly applies the dedicated Service Agent User model to the internal Sales Productivity Agent. The exam distinction is user-context execution for internal productivity versus dedicated service-agent execution for customer-facing service automation."
   },
   {
@@ -2131,7 +2131,7 @@ const QUESTIONS = [
       "The large language model (LLM) selects the right topic and action, if they exist. If there are no matches, the LLM attempts to answer the user 's request.",
       "The reasoning engine identifies the agent action to be executed by its name and action input instructions."
     ],
-    "correctAnswerText": "The large language model (LLM) selects the right topic and action, if they exist. If there are no matches, the LLM attempts to answer the user's request.",
+    "correctAnswerText": "The large language model (LLM) selects the right topic and action, if they exist. If there are no matches, the LLM attempts to answer the user 's request.",
     "explanation": "In the AgentForce Architecture and Reasoning Engine Overview, Salesforce explains that the large language model (LLM) drives topic and action selection. The documentation states: “AgentForce uses an LLM to interpret user intent, map it to existing topics, and trigger the appropriate action when available. If no matching topic or action is found, the LLM attempts to generate a direct response using its available context.” This design ensures dynamic adaptability—the agent can choose the correct topic and associated action based on natural language understanding. Option A is incorrect because topic-to-utterance mapping is a configuration aid, not the selection mechanism. Option C is incorrect because the reasoning engine does not select actions by name—it interprets user intent via the LLM and executes mapped actions if relevant. Therefore, Option B reflects the official operational flow of AgentForce’s LLM-driven reasoning process. Reference (AgentForce Documents / Study Guide): AgentForce Reasoning Engine Overview AgentForce Builder User Guide: “Topic, Action, and LLM Selection Flow” AgentForce Study Guide: “How the LLM Chooses Topics and Executes Actions”"
   },
   {
@@ -2203,7 +2203,7 @@ const QUESTIONS = [
       "The declaration is a syntax error and the agent will fail to deploy.",
       "The variable is treated as read-only; it cannot be updated by actions or @utils.setVariables at runtime because it lacks the mutable keyword. ##"
     ],
-    "correctAnswerText": "The variable is treated as read-only; it cannot be updated by actions or @utils.setVariables at runtime because it lacks the mutable keyword.",
+    "correctAnswerText": "The variable is treated as read-only; it cannot be updated by actions or @utils.setVariables at runtime because it lacks the mutable keyword. ##",
     "explanation": "The correct answer is C because Agent Script variables are read-only unless they are explicitly declared with the mutable keyword. A regular variable without mutable can be referenced, but the agent cannot change its value during the conversation. That is exactly why order_id: string = \"\" is not suitable for capturing the customer’s order number during runtime. To store information gathered from the user, the variable must be declared as a mutable string, such as order_id: mutable string = \"\". Option A is wrong because mutability is not the default. Option B is wrong because the declaration itself is valid syntax; it simply creates a nonmutable variable. The runtime failure occurs when the agent or utility attempts to update it."
   },
   {
@@ -2275,7 +2275,7 @@ const QUESTIONS = [
       "Include detailed verification instructions in the agent's topic instructions explaining when customers should be verified and rely on the LLM to follow these guidelines consistently across all interactions.",
       "Create a custom variable IsCustomerVerified set by a verification action, then apply a conditional filter using the expression IsCustomerVerified equals true to all sensitive data actions, ensuring deterministic access control that the LLM can 't alter."
     ],
-    "correctAnswerText": "Create a custom variable IsCustomerVerified set by a verification action, then apply a conditional filter using the expression IsCustomerVerified equals true to all sensitive data actions, ensuring deterministic access control that the LLM can't alter.",
+    "correctAnswerText": "Create a custom variable IsCustomerVerified set by a verification action, then apply a conditional filter using the expression IsCustomerVerified equals true to all sensitive data actions, ensuring deterministic access control that the LLM can 't alter.",
     "explanation": "The AgentForce Security and Deterministic Logic Guide specifies that sensitive actions must be gated through conditional filters linked to verification variables, not through natural language. It states: “For any process requiring secure, deterministic access, create a custom variable (e.g., IsCustomerVerified) that stores the verification status as a Boolean. Apply a filter expression to all protected actions (e.g., IsCustomerVerified = true). This ensures the LLM cannot bypass or alter access logic.” This configuration ensures security and determinism because the execution of sensitive actions is programmatically enforced, not dependent on the LLM’s understanding. Option A is incorrect because natural language-based checks are non-deterministic. Option B relies solely on topic instructions, which can be ignored or misinterpreted by the LLM. Therefore, Option C is the only solution that provides deterministic, system-enforced access control. Reference (AgentForce Documents / Study Guide): AgentForce Security Configuration Guide: “Using Conditional Filters for Deterministic Access” AgentForce Implementation Handbook: “Verification Variables and Secure Action Flow” AgentForce Study Guide: “Protecting Sensitive Data in AI Workflows”"
   },
   {
@@ -2359,7 +2359,7 @@ const QUESTIONS = [
       "Ensure the retriever 's filters are defined to limit the scope of each search efficiently.",
       "Increase the recency bias setting for the retriever limiting scope to more recent data."
     ],
-    "correctAnswerText": "Ensure the retriever's filters are defined to limit the scope of each search efficiently.",
+    "correctAnswerText": "Ensure the retriever 's filters are defined to limit the scope of each search efficiently.",
     "explanation": ""
   },
   {
@@ -2491,7 +2491,7 @@ const QUESTIONS = [
       "Apex classes invoked by an Agent Action may be deployed with less than $75\\%$ test coverage as long as the agent is not activated in production.",
       "The Apex classes may bypass the $75\\%$ code coverage requirement as long as they are only used by the agent."
     ],
-    "correctAnswerText": "The Apex classes must have at least 75% code coverage from unit tests, and all dependencies must be in the deployment package.",
+    "correctAnswerText": "The Apex classes must have at least $75\\%$ code coverage from unit tests, and all dependencies must be in the deployment package.",
     "explanation": "Universal Containers (UC) is using Apex classes within an Agent Action for their Agentforce Agent. Deploying Apex in Salesforce has specific requirements, especially when tied to Agentforce functionality. Let’s evaluate the options. Option A: The Apex classes must have at least 75% code coverage from unit tests, and all dependencies must be in the deployment package.Salesforce enforces a strict requirement that all Apex classes must achieve at least 75% code coverage from unit tests for deployment to production, regardless of their use case (e.g., Agentforce, triggers, or web services). Additionally, when Apex is invoked by an Agent Action (e.g., via a Flow or direct invocation), all dependencies (e.g., referenced classes, objects) must be included in the deployment package to ensure functionality. This is a standard deployment consideration in Salesforce and applies to Agentforce, making this the correct answer. Option B: Apex classes invoked by an Agent Action may be deployed with less than 75% test coverage as long as the agent is not activated in production.Salesforce’s 75% code coverage requirement is mandatory for production deployment, regardless of whether the agent is activated. There’s no exemption based on activation status—coverage is enforced at the deployment stage. This option is incorrect and contradicts Salesforce’s Apex deployment rules. Option C: The Apex classes may bypass the 75% code coverage requirement as long as they are only used by the agent.No such bypass exists in Salesforce. The 75% code coverage rule applies universally to all Apex in production, including classes used by Agentforce. Agent-specific usage doesn’t waive this requirement, making this incorrect. Why Option A is Correct: The 75% code coverage requirement and inclusion of dependencies are fundamental Salesforce deployment rules, applicable to Apex in Agent Actions. This ensures reliability and functionality in production, as per official documentation. Reference: Salesforce Developer Guide: Apex Testing – Confirms 75% coverage requirement."
   },
   {
@@ -2515,7 +2515,7 @@ const QUESTIONS = [
       "Set the agent action flow to run in System Mode without sharing",
       "Change the Opportunity object's organization-wide default to Public Read Only so the Einstein Service Agent User can access records"
     ],
-    "correctAnswerText": "Add the required object permissions to the Einstein Service Agent User’s permission set and configure appropriate sharing rules",
+    "correctAnswerText": "Add the required object permissions to the Einstein Service Agent User's permission set and configure appropriate sharing rules",
     "explanation": "The correct answer is A because least privilege means granting only the minimum access required for the agent to perform the task. Since Opportunity access is restricted by a Private organization-wide default, the agent user needs the correct object permissions and record-level access through sharing rules or an equivalent sharing model. Option B is too broad because running without sharing can bypass intended record access controls and expose data beyond the business requirement. Option C is also excessive because changing the organization-wide default to Public Read Only weakens security for every user and process, not just this agent action. Salesforce’s Agentforce security guidance specifically recommends reviewing OWD, agent user permissions, and sharing rules to ensure proper record access."
   },
   {
@@ -2683,7 +2683,7 @@ const QUESTIONS = [
       "Create concise, clear, and consistent prompt templates with effective grounding, contextual role-playing, clear instructions, and iterative feedback.",
       "Submit a prompt review case to Salesforce and conduct thorough testing in the playground to refine outputs until they meet user expectations."
     ],
-    "correctAnswerText": "Create concise, clear, and consistent prompt templates with effective grounding, contextual roleplaying, clear instructions, and iterative feedback.",
+    "correctAnswerText": "Create concise, clear, and consistent prompt templates with effective grounding, contextual role-playing, clear instructions, and iterative feedback.",
     "explanation": "For Universal Containers (UC) to refine its Generative AI prompt design strategy and improve the accuracy of the generated summaries for the custom object Guest, the best practice is to focus on crafting concise, clear, and consistent prompt templates. This includes: Effective grounding: Ensuring the prompt pulls data from the correct sources. Contextual role-playing: Providing the AI with a clear understanding of its role in generating the summary. Clear instructions: Giving unambiguous directions on what to include in the response. Iterative feedback: Regularly testing and adjusting prompts based on user feedback. Option B is correct because it follows industry best practices for refining prompt design. Option A (prompt test mode) is useful but less relevant for refining prompt design itself. Option C (prompt review case with Salesforce) would be more appropriate for technical issues or complex prompt errors, not general design refinement. Salesforce Prompt Design Best Practices: https://help.salesforce.com/s/articleView?id=sf.prompt_design_best_practices.htm"
   },
   {
@@ -2695,7 +2695,7 @@ const QUESTIONS = [
       "The LLM uses a static set of rules to match the user 's request with predefined topics and actions, bypassing the need for dynamic interpretation and planning.",
       "Using a dialog pattern, the LLM matches the user query to the available topic, action and steps then performs the steps for each action, such as retrieving a fast of open opportunities."
     ],
-    "correctAnswerText": "The LLM interprets the user's request, generates a plan by identifying the apcMopnete topics and actions, and executes the actions to retrieve and display the open opportunities",
+    "correctAnswerText": "The LLM interprets the user 's request, generates a plan by identifying the apcMopnete topics and actions, and executes the actions to retrieve and display the open opportunities",
     "explanation": "Agentforce’s LLM dynamically interprets natural language requests (e.g., \"Show me open opportunities\"), generates an execution plan using the planner service, and retrieves data via actions (e.g., querying Salesforce records). This contrasts with static rules (B) or rigid dialog patterns (C), which lack contextual adaptability. Salesforce documentation highlights the planner’s role in converting intents into actionable steps while adhering to security and business logic. Reference: Salesforce Help Article: Agentforce Planner Service (\"Dynamic Request Interpretation\" section). Einstein Agentforce Specialist Trailhead: \"How Agentforce Processes User Requests.\""
   },
   {
@@ -2743,7 +2743,7 @@ const QUESTIONS = [
       "Up to 50 MB for both text or HTML files and PDF files",
       "Up to 4 MB for text or HTML files and up to 100 MB for PDF files ##"
     ],
-    "correctAnswerText": "Up to 4 MB for text or HTML files and up to 100 MB for PDF files",
+    "correctAnswerText": "Up to 4 MB for text or HTML files and up to 100 MB for PDF files ##",
     "explanation": "The correct answer is C because Salesforce applies different upload limits based on file type for filebased Agentforce Data Libraries. Text and HTML files have a smaller supported maximum of 4 MB, while PDF files can be uploaded up to 100 MB. Option A reverses the limits and is therefore incorrect. Option B invents a uniform 50 MB limit, which does not match Salesforce’s documented limits. This distinction matters during implementation because oversized text or HTML files must be reduced, split, or converted into a supported ingestion pattern before indexing. PDF files have a higher ceiling, but they still must meet processing and library requirements. Salesforce documentation for uploaded files states that users can upload up to 4 MB for text or HTML files and 100 MB for PDF files."
   },
   {
@@ -3030,7 +3030,7 @@ const QUESTIONS = [
       "The flow must have the \"with sharing\" permission selected in the advanced settings for the permissions, field-level security, and sharing settings to be respected.",
       "The custom action adheres to the permissions, held-level security, and sharing settings configured in the flow.. The Agent will always run flows in system mode so the running user 's data access will not affect the data returned."
     ],
-    "correctAnswerText": "The custom action adheres to the permissions, held-level security, and sharing settings configured in the flow.. The Agent will always run flows in system mode so the running user's data access will not affect the data returned.",
+    "correctAnswerText": "The custom action adheres to the permissions, held-level security, and sharing settings configured in the flow.. The Agent will always run flows in system mode so the running user 's data access will not affect the data returned.",
     "explanation": "When a flow is invoked via a custom Agent action, its data access depends on the flow’s runtime configuration, not system mode by default. Salesforce flows can be configured to respect the running user’s permissions and sharing settings: If the flow is set to \"Run as the User Who Launched the Flow\" (enabled in Flow Settings), it adheres to the user’s permissions, field-level security (FLS), and sharing rules. Option C is incorrect because flows do not always run in system mode unless explicitly configured to do so. Option A is misleading because \"with sharing\" is an Apex concept, not a flow setting. Flows use runtime settings like FLS and sharing enforcement. Reference: Salesforce Help: Flow Runtime and Security Context Flow Settings: \"Run with User Permission and Field-Level Security\" ensures data access aligns with the user’s permissions."
   },
   {
@@ -3138,7 +3138,7 @@ const QUESTIONS = [
       "Deploy the agent in a QA sandbox environment and review the Utterance Analysis reports to review effectiveness.",
       "Create a CSV file with UC 's test cases in Agentforce Testing Center using the testing template."
     ],
-    "correctAnswerText": "Create a CSV file with UC's test cases in Agentforce Testing Center using the testing template.",
+    "correctAnswerText": "Create a CSV file with UC 's test cases in Agentforce Testing Center using the testing template.",
     "explanation": "The goal of Universal Containers (UC) is to test its Agentforce agents for effectiveness, reliability, and trust before production deployment, with a focus on efficiently handling a large and repeatable number of utterances. Let’s evaluate each option against this requirement and Salesforce’s official Agentforce tools and best practices. Option A: Leverage the Agent Large Language Model (LLM) UI and test UC's agents with different utterances prior to activating the agent.While Agentforce leverages advanced reasoning capabilities (powered by the Atlas Reasoning Engine), there’s no specific \"Agent Large Language Model (LLM) UI\" referenced in Salesforce documentation for testing agents. Testing utterances directly within an LLM interface might imply manual experimentation, but this approach lacks scalability and repeatability for a large number of utterances. It’s better suited for ad-hoc testing of individual responses rather than systematic evaluation, making it inefficient for UC’s needs. Option B: Deploy the agent in a QA sandbox environment and review the Utterance Analysis reports to review effectiveness.Deploying an agent in a QA sandbox is a valid step in the development lifecycle, as sandboxes allow testing in a production-like environment without affecting live data. However, \"Utterance Analysis reports\" is not a standard term in Agentforce documentation. Salesforce provides tools like Agent Analytics or User Utterances dashboards for post-deployment analysis, but these are more about monitoring live performance than pre-deployment testing. This option doesn’t explicitly address how to efficiently test a large and repeatable number of utterances before deployment, making it less precise for UC’s requirement. Option C: Create a CSV file with UC's test cases in Agentforce Testing Center using the testing template.The Agentforce Testing Center is a dedicated tool within Agentforce Studio designed specifically for testing autonomous AI agents. According to Salesforce documentation, Testing Center allows users to upload a CSV file containing test cases (e.g., utterances and expected outcomes) using a provided template. This enables the generation and execution of hundreds of synthetic interactions in parallel, simulating real-world scenarios. The tool evaluates how the agent interprets utterances, selects topics, and executes actions, providing detailed results for iteration. This aligns perfectly with UC’s need for efficiency (bulk testing via CSV), repeatability (standardized test cases), and reliability (systematic validation), ensuring the agent is production-ready. This is the recommended approach per official guidelines. Why Option C is Correct: The Agentforce Testing Center is explicitly built for pre-deployment validation of agents. It supports bulk testing by allowing users to upload a CSV with utterances, which is then processed by the Atlas Reasoning Engine to assess accuracy and reliability. This method ensures UC can systematically test a large dataset, refine agent instructions or topics based on results, and build trust in the agent’s performance—all before production deployment. This aligns with Salesforce’s emphasis on testing non-deterministic AI systems efficiently, as noted in Agentforce setup documentation and Trailhead modules. Reference: Salesforce Trailhead: Get Started with Salesforce Agentforce Specialist Certification Prep – Details the use of Agentforce Testing Center for testing agents with synthetic interactions. Salesforce Help: Agentforce Setup > Testing Autonomous AI Agents – Recommends Testing Center for pre-deployment validation of agent effectiveness and reliability."
   },
   {
@@ -3270,7 +3270,7 @@ const QUESTIONS = [
       "Data preparation entails aggregating, normalizing, and encoding structured datasets to ensure compliance with data governance and security protocols.",
       "Data preparation Involves loading, chunking, vectorizing, and storing content in a search-optimized manner to support retrieval from the vector database."
     ],
-    "correctAnswerText": "Data preparation Involves loading, chunking, vectorizing, and storing content in a searchoptimized manner to support retrieval from the vector database.",
+    "correctAnswerText": "Data preparation Involves loading, chunking, vectorizing, and storing content in a search-optimized manner to support retrieval from the vector database.",
     "explanation": "Why is \"Loading, Chunking, Vectorizing, and Storing\" the correct answer? Agentforce AI-powered search and retriever indexing requires data to be structured and optimized for retrieval. The Data Cloud preparation process involves: Key Steps in the Data Preparation Process for Agentforce: ## Loading Data Raw text from documents, emails, chat transcripts, and Knowledge articles is loaded into Data Cloud. Chunking (Breaking Text into Small Parts) AI divides long-form text into retrievable chunks to improve response accuracy. Example: A 1000-word article might be split into multiple indexed paragraphs. Vectorization (Transforming Text for AI Retrieval) Each text chunk is converted into numerical vector embeddings. This enables faster AI-powered searches based on semantic meaning, not just keywords. Storing in a Vector Database The processed data is stored in a search-optimized vector format. Agentforce AI retrievers use this data to find relevant responses quickly. Why Not the Other Options? - ❌ A. Real-time data ingestion and dynamic indexing Incorrect because while real-time updates can occur, the primary process involves preprocessing and indexing first. - ❌ B. Aggregating, normalizing, and encoding structured datasets Incorrect because this process relates to data compliance and security, not AI retrieval optimization. Agentforce Specialist Reference Salesforce AI Specialist Material confirms that data preparation includes chunking, vectorizing, and storing for AI retrieval in Data Cloud ."
   },
   {
@@ -3318,7 +3318,7 @@ const QUESTIONS = [
       "Retrieves Salesforce data based on the user's permissions executing the prompt.",
       "Retrieves Salesforces data based on the Prompt template 's object permissions."
     ],
-    "correctAnswerText": "Retrieves Salesforce data based on the user’s permissions executing the prompt.",
+    "correctAnswerText": "Retrieves Salesforce data based on the user's permissions executing the prompt.",
     "explanation": "Secure Data Retrieval enforces Salesforce’s security model by dynamically grounding data access in the permissions of the user executing the prompt. This ensures compliance with CRUD (Create, Read, Update, Delete) and FLS (Field-Level Security) settings, preventing unauthorized access to sensitive data. For example, if a user lacks access to a specific object or field, the AI model cannot retrieve it for dynamic grounding. \"Run As\" user permissions (A) would bypass user-specific security, posing a compliance risk. Prompt template permissions (C) are not a Salesforce security mechanism; access is always tied to the user’s profile and sharing settings. Reference: Salesforce Help Article: Secure Data Retrieval in Einstein Trust Layer (\"User Context Enforcement\" section). Einstein Trust Layer Technical Guide: \"Dynamic Grounding and Data Security\" (User Permissions alignment)."
   },
   {
@@ -3366,7 +3366,7 @@ const QUESTIONS = [
       "Vector embedding in hybrid search are prefiltered by keyword matches, reducing computational overhead and improving response accuracy.",
       "Hybrid search indexes support both literal keyword matches and semantic recall, useful when queries mix specific terms and intent. ##"
     ],
-    "correctAnswerText": "Hybrid search indexes support both literal keyword matches and semantic recall, useful when queries mix specific terms and intent.",
+    "correctAnswerText": "Hybrid search indexes support both literal keyword matches and semantic recall, useful when queries mix specific terms and intent. ##",
     "explanation": "According to the AgentForce Data Cloud Search Indexing Guide and RAG Optimization Framework, a hybrid search index combines both keyword-based (lexical) and vector-based (semantic) search capabilities. This dual-mode retrieval enables AgentForce to interpret user intent while still honoring exact keyword matches. In many enterprise scenarios, queries contain a mixture of specific terms (e.g., “contract ID 54321”) and semantic intent (e.g., “renew my subscription”). A purely vector search might overlook exact keywords, while a keyword-only search might miss semantically relevant results. Hybrid indexing ensures that both types of retrieval are available simultaneously — providing the best balance of precision and contextual understanding. Option A is incorrect because hybrid search still uses embeddings; it doesn’t eliminate them. Option B partially describes the hybrid search process but oversimplifies its purpose — the primary goal isn’t just prefiltering for performance, but combining semantic recall and exact matching for more relevant, balanced results. Thus, per AgentForce documentation, hybrid search indexes are preferred when organizations need both literal keyword matching and semantic understanding for complex, natural-language queries. Reference: AgentForce Data Cloud Documentation — “Hybrid Search Index: Combining Keyword and Semantic Retrieval.”"
   },
   {
@@ -3426,7 +3426,7 @@ const QUESTIONS = [
       "Add the policy version identifier as a prepend field in the search index so every chunk is tagged with its applicable version at indexing time, enabling the large language model (LLM) to identify and select the correct version during response generation.",
       "Create a separate data stream for each policy version and configure the agent to query the appropriate unstructured data model object (UDMO) corresponding to the customer's contract date, isolating each version's vectors from the others."
     ],
-    "correctAnswerText": "Configure a custom retriever in AI Models, formerly Einstein Studio, with a dynamic filter on the policy version metadata field, populated at runtime from the customer’s Contract record in CRM, ensuring retrieval is deterministically scoped to the document version applicable to that customer’s agreement before similarity ranking is applied.",
+    "correctAnswerText": "Configure a custom retriever in AI Models, formerly Einstein Studio, with a dynamic filter on the policy version metadata field, populated at runtime from the customer's Contract record in CRM, ensuring retrieval is deterministically scoped to the document version applicable to that customer's agreement before similarity ranking is applied.",
     "explanation": "The correct answer is A. Since historical policy versions must remain searchable, the solution is not deletion; it is deterministic retrieval scoping. A custom retriever with a dynamic filter can use the customer’s Contract record to pass the applicable policy version at runtime. That limits candidate chunks before semantic ranking, reducing the risk that the LLM receives the wrong policy version. Option B helps add context to chunks, but it still leaves the LLM to choose among versions after retrieval, which is weaker for legal accuracy. Option C creates unnecessary operational complexity by splitting every policy version into separate data streams. Data 360 retrievers are designed to search indexes and can be customized with filters and runtime filter values for more precise grounding."
   },
   {
@@ -3558,7 +3558,7 @@ const QUESTIONS = [
       "Add the send\\_verification logic inside the procedural instructions so it executes before profile setup finishes.",
       "Configure the send\\_verification action to be available when account\\_created = True and wait for the agent to call it in the next step."
     ],
-    "correctAnswerText": "Add the send_verification logic inside the procedural instructions so it executes before profile setup finishes.",
+    "correctAnswerText": "Add the send\\_verification logic inside the procedural instructions so it executes before profile setup finishes.",
     "explanation": "The correct answer is B because the requirement is immediate, deterministic sequencing after account creation. Procedural instructions in Agent Script are designed for multi-step workflows where the agent must run actions in a required order without waiting for another user turn. The specialist should structure the workflow so that after account creation succeeds, the procedural logic runs the verification email step before advancing to profile setup. Option A is phrased incorrectly because run belongs in Agent Script procedural instructions, not inside the create_account action itself. Option C is weaker because making an action available does not force immediate execution. Salesforce Agent Script recipes describe action chaining with run, step tracking, procedural instructions, and automatic follow-up action execution in multi-step workflows."
   },
   {
@@ -3738,7 +3738,7 @@ const QUESTIONS = [
       "To evaluate why the agent was unable to answer a user's question",
       "To evaluate the deflection rate of the agent"
     ],
-    "correctAnswerText": "To evaluate the agent’s overall performance",
+    "correctAnswerText": "To evaluate the agent's overall performance",
     "explanation": "The correct answer is A. Intents and session metrics in Agentforce Observability are broad operational indicators used to evaluate overall agent performance. They help specialists understand how often the agent is used, what users are trying to accomplish, how sessions progress, and whether the agent is producing effective outcomes. Option B is too narrow because diagnosing why a specific question was not answered requires deeper session tracing or inspection, not just highlevel intent and session metrics. Option C is also too narrow because deflection rate is only one business outcome, while Observability metrics cover broader performance, behavior, and effectiveness. Salesforce describes Agentforce Observability as a way to analyze usage, effectiveness, feedback, and performance across deployed agents."
   },
   {
@@ -3762,7 +3762,7 @@ const QUESTIONS = [
       "Use a custom Apex @InvocableMethod to handle the entire return process.",
       "Use procedural instructions in Agent Script to enforce the order validation step. ##"
     ],
-    "correctAnswerText": "Use procedural instructions in Agent Script to enforce the order validation step.",
+    "correctAnswerText": "Use procedural instructions in Agent Script to enforce the order validation step. ##",
     "explanation": "The correct answer is C because the requirement combines natural conversation with strict process sequencing. Agent Script procedural instructions are intended for exactly this hybrid pattern: the agent can still converse naturally, but mandatory steps such as order eligibility validation can be enforced before the return process continues. Option A is weak because Flow can execute validation logic, but “guiding the LLM” does not guarantee that the LLM will always follow the required sequence. Option B is excessive because moving the entire return process into Apex reduces configurability and is unnecessary when the main need is deterministic orchestration. Salesforce Agent Script guidance states that business-critical logic can execute reliably while conversational elements remain flexible, and run can execute required validations immediately when the code path is reached."
   },
   {
@@ -3786,7 +3786,7 @@ const QUESTIONS = [
       "Enable ' Include Related Attachments' for Knowledge-- kav and map the ContentDocumentLink unstructured data model object (UDMO).",
       "Use Data Cloud 's 'Include Attachments' option and select the ContentDocumentVersion unstructured data model object (UDMO)."
     ],
-    "correctAnswerText": "Use Data Cloud's ‘Include Attachments’ option and select the ContentDocumentVersion unstructured data model object (UDMO).",
+    "correctAnswerText": "Use Data Cloud 's 'Include Attachments' option and select the ContentDocumentVersion unstructured data model object (UDMO).",
     "explanation": "The AgentForce Data Cloud Indexing Guide clearly states that to include content from attached files such as PDFs in Knowledge articles, the correct configuration is to enable “Include Attachments” and map the ContentDocumentVersion unstructured data model object (UDMO). The documentation specifies: “When indexing Knowledge or Case data, enabling the ‘Include Attachments’ option allows the Data Cloud index to extract and embed content from linked ContentDocumentVersion records, ensuring the agent retrieves relevant information from attachments.” Option A (increasing chunk size) does not enable attachment ingestion. Option B (ContentDocumentLink mapping) only establishes a relationship, not content extraction. Therefore, Option C ensures attachment content becomes searchable within AgentForce retrieval. ## Reference (AgentForce Documents / Study Guide): AgentForce Data Cloud Indexing and Retrieval Guide: “Including Attachments in Knowledge Indexes” AgentForce Implementation Handbook: “Mapping UDMO for ContentDocumentVersion” AgentForce Study Guide: “Attachment Content Inclusion for Knowledge Articles”"
   },
   {
@@ -3843,7 +3843,8 @@ const QUESTIONS = [
     "question": "The VP of Service at Universal Containers requires a report showing weekly deflection rate trends and escalation volumes for the Agentforce Service Agent over the past 90 days. Which approach should the Agentforce Specialist recommend?",
     "choices": [
       "Enable Agentforce Health Monitoring to configure escalation rate alert thresholds and export the resulting trend data into a Tableau dashboard aligned with the VP of Service's reporting requirement s",
-      "Use Agent Analytics within Agentforce Observability, which provides Tableau-powered dashboards with prebuilt deflection rate, escalation volume, and abandonment metrics calculated from agent session data stored in Data 360 C. Query the OTEL-compliant Session Tracing Data Model in Data 360 using CRM Analytics to build a custom dashboard with deflection rate calculations and week-over-week escalation comparisons tailored to UC's reporting standards"
+      "Use Agent Analytics within Agentforce Observability, which provides Tableau-powered dashboards with prebuilt deflection rate, escalation volume, and abandonment metrics calculated from agent session data stored in Data 360",
+      "Query the OTEL-compliant Session Tracing Data Model in Data 360 using CRM Analytics to build a custom dashboard with deflection rate calculations and week-over-week escalation comparisons tailored to UC's reporting standards"
     ],
     "correctAnswerText": "Use Agent Analytics within Agentforce Observability, which provides Tableau-powered dashboards with prebuilt deflection rate, escalation volume, and abandonment metrics calculated from agent session data stored in Data 360",
     "explanation": ""
@@ -3925,9 +3926,9 @@ const QUESTIONS = [
     "category": "Prompt Engineering",
     "question": "Universal Containers aims to streamline the sales team 's daily tasks by using AI. When considering these new workflows, which improvement requires the use of Prompt Builder?",
     "choices": [
-      "Populate an Al-generated time-to close estimation to opportunities",
-      "Populate an Al generated summary field for sales contracts.",
-      "Populate an Al generated lead score for new leads."
+      "Populate an AI-generated time-to close estimation to opportunities",
+      "Populate an AI generated summary field for sales contracts.",
+      "Populate an AI generated lead score for new leads."
     ],
     "correctAnswerText": "Populate an AI generated summary field for sales contracts.",
     "explanation": "Prompt Builder is explicitly required to create AI-generated summary fields via prompt templates. These fields use natural language instructions to extract or synthesize information (e.g., summarizing contract terms). Time-to-close estimations (A) and lead scores (C) are typically handled by predictive AI (e.g., Einstein Opportunity Scoring) or analytics tools, which do not require Prompt Builder. Reference: Salesforce Help Article: Create AI-Generated Fields with Prompt Builder (\"Summary Field Generation\" example). Einstein GPT for Sales Guide: \"Automating Contract Summaries.\""
@@ -4073,7 +4074,7 @@ const QUESTIONS = [
       "Use absolute keywords like \"Always\" and \"Never\" in Topic Instructions to enforce logic, such as \"Always escalate when severity is high\" and \"Never create a support case when severity is high\".",
       "Create a custom variable severityLevel populated by a Triage action. Add filters so the \"Escalate to human service rep\" action only runs when severityLevel = 'High', and the \"Create Support Case\" action runs only when severityLevel != 'High'."
     ],
-    "correctAnswerText": "Create a custom variable severityLevel populated by a Triage action. Add filters so the “Escalate to human service rep” action only runs when severityLevel = ‘High’, and the “Create Support Case” action runs only when severityLevel != ‘High’.",
+    "correctAnswerText": "Create a custom variable severityLevel populated by a Triage action. Add filters so the \"Escalate to human service rep\" action only runs when severityLevel = 'High', and the \"Create Support Case\" action runs only when severityLevel != 'High'.",
     "explanation": "The AgentForce Conditional Logic and Triage Design Guide recommends using custom variables and deterministic filters for reliable decision-making in AI agents. The document explains: “For deterministic triage flows, create a variable (e.g., severityLevel) populated by an action or rule. Then, apply filters so that specific actions execute only when the variable matches defined criteria. This approach guarantees predictable and auditable outcomes.” In this case, severityLevel controls whether to escalate to a human rep or create a support case, ensuring no ambiguity in execution. Option A (IF/THEN logic in topic instructions) and Option B (“Always/Never” keywords) rely on natural language interpretation, which is non-deterministic and can lead to inconsistent results. Thus, Option C aligns with Salesforce’s documented best practice for reliable and rule-based triage logic. Reference (AgentForce Documents / Study Guide): AgentForce Conditional Logic Guide: “Using Variables and Filters for Deterministic Flows” AgentForce Implementation Handbook: “Triage and Escalation Best Practices” AgentForce Study Guide: “Building Reliable Multi-Step Decision Logic”"
   },
   {
@@ -4181,7 +4182,7 @@ const QUESTIONS = [
       "Apply a text filter to the Agent Session that automatically blocks the word \"refund\" from the user's prompt unless they are a Platinum customer.",
       "Configure an Action Condition filter on the \"Issue Refund\" action so that it is only available to the agent when Account Tier equals \"Platinum.\""
     ],
-    "correctAnswerText": "Configure an Action Condition filter on the “Issue Refund” action so that it is only available to the agent when Account Tier equals “Platinum.”",
+    "correctAnswerText": "Configure an Action Condition filter on the \"Issue Refund\" action so that it is only available to the agent when Account Tier equals \"Platinum.\"",
     "explanation": "The correct answer is C because this requirement must be enforced deterministically at the actionavailability layer, not trusted to natural language instructions. In Agentforce, filters can control access to subagents and actions so the agent can use them only when defined conditions are met. For refund processing, the “Issue Refund” action should be hidden from the reasoning engine unless the account tier condition evaluates to Platinum. Option A is weak because system instructions are interpreted by the model and can be ignored or misapplied. Option B is wrong because blocking a keyword is brittle and does not validate entitlement. Action filters are the correct control because they prevent the action from being available until the business rule is satisfied."
   },
   {
@@ -4227,7 +4228,7 @@ const QUESTIONS = [
     "choices": [
       "Only the latest version of a template can be activated.",
       "Every modification on a template will be saved as a new version automatically.",
-      "Prompt template version is activated; no further changes can be saved to that version."
+      "After a prompt template version is activated, no further changes can be saved to that version."
     ],
     "correctAnswerText": "After a prompt template version is activated, no further changes can be saved to that version.",
     "explanation": "According to the AgentForce Prompt Template Versioning Guide, when a prompt template version is marked as immutable, it means that no edits or modifications can be made to that version after it has been activated. This ensures that the logic, wording, and grounding parameters tied to that version remain locked and consistent for auditing, reproducibility, and compliance purposes. If further changes are required, the system automatically creates a new draft version of the template. The old version remains immutable and preserved for traceability. Option B is incorrect because multiple versions can exist, and older versions can remain active under specific testing or rollback scenarios. Option C is partially true but incomplete—the immutability refers to the frozen nature of an active version, not just version creation. Thus, the correct explanation is Option A – Once a prompt template version is activated, it becomes immutable and cannot be changed. Reference: AgentForce Prompt Management Documentation — “Immutable Version Control in Prompt Templates.”"
@@ -4241,7 +4242,7 @@ const QUESTIONS = [
       "A tool that enables companies to create reusable prompts for large language models (LLMs), bringing generative AI responses to their flow of work.",
       "A tool within Salesforce offering real-time AI-powered suggestions and guidance to users, Improving productivity and decision-making."
     ],
-    "correctAnswerText": "A tool that enables companies to create reusable prompts for large language models (LLMs), bringing generative AI responses to their flow of work",
+    "correctAnswerText": "A tool that enables companies to create reusable prompts for large language models (LLMs), bringing generative AI responses to their flow of work.",
     "explanation": "Prompt Builder is designed to help organizations create and configure reusable prompts for large language models (LLMs). By integrating generative AI responses into workflows, Prompt Builder enables customization of AI prompts that interact with Salesforce data and automate complex processes. This tool is especially useful for creating tailored and consistent AI-generated content in various business contexts, including customer service and sales. It is not a tool for Apex programming (as in option A). It is also not limited to real-time suggestions as mentioned in option C. Instead, it provides a flexible way for companies to manage and customize how AI-driven responses are generated and used in their workflows. Salesforce Prompt Builder Overview: https://help.salesforce.com/s/articleView?id=sf.prompt_builder.htm"
   },
   {
@@ -4253,7 +4254,7 @@ const QUESTIONS = [
       "apex\\_\\_String",
       "lightning\\_\\_textType"
     ],
-    "correctAnswerText": "lightning__stringType",
+    "correctAnswerText": "lightning\\_\\_stringType",
     "explanation": "The correct answer is A because Agentforce action metadata must use supported Lightning data types when defining action inputs and outputs. A collection of text values must be exposed to the reasoning engine through a Salesforce-supported Lightning type, not through an Apex implementation name. lightning__stringType correctly maps string-based action input so Agentforce can validate, structure, and pass values into the Apex action. apex__String is not the correct metadata type because it describes an Apex language type, not the Agentforce action schema type. lightning__textType is a UI-oriented text type and is not the correct mapping for this collection-style string action input. Salesforce’s Agentforce developer guidance confirms that Apex strings are mapped to standard Lightning types for action configuration."
   },
   {
@@ -4337,7 +4338,7 @@ const QUESTIONS = [
       "The related list prompt template option is not enabled.",
       "The related list is not on the parent object's page layout."
     ],
-    "correctAnswerText": "The related list is not on the parent object’s page layout.",
+    "correctAnswerText": "The related list is not on the parent object's page layout.",
     "explanation": "UC has grounded a prompt template with a related list, but the responses are incorrect during UAT. Grounding with related lists in Agentforce allows the AI to access data from child records linked to a parent object. Let’s analyze the options. Option A: The related list is Read Only.Read-only status (e.g., via field-level security or sharing rules) might limit user edits, but it doesn’t inherently prevent the AI from accessing related list data for grounding, as long as the running user (or system context) has read access. This is unlikely to cause incorrect responses and is not a primary consideration, making it incorrect. Option B: The related list prompt template option is not enabled.There’s no specific \"related list prompt template option\" toggle in Prompt Builder. When grounding with a Record Snapshot or Flex template, related lists are included if properly configured (e.g., via object relationships). This option seems to be a misphrasing and doesn’t align with documented settings, making it incorrect. Option C: The related list is not on the parent object’s page layout.In Agentforce, grounding with related lists relies on the related list being defined and accessible in the parent object’s metadata, often tied to its presence on the page layout. If the related list isn’t on the layout, the AI might not recognize or retrieve its data correctly, leading to incomplete or incorrect responses. Salesforce documentation notes that related list data availability can depend on layout configuration, making this a plausible and common issue during UAT, and thus the correct answer. Why Option C is Correct: The absence of the related list from the parent object’s page layout can disrupt data retrieval for grounding, leading to incorrect AI responses. This is a known configuration consideration in Agentforce setup and testing, as per official guidance. Reference: Salesforce Help: Troubleshoot Prompt Responses – Lists layout issues as a common grounding problem."
   },
   {
@@ -4445,7 +4446,7 @@ const QUESTIONS = [
       "Declare the is\\_verified variable as immutable so it cannot be modified during the session.",
       "Update the is\\_verified variable to true after the verification action succeeds using @utils.setVariables."
     ],
-    "correctAnswerText": "Update the is_verified variable to true after the verification action succeeds using @utils.setVariables.",
+    "correctAnswerText": "Update the is\\_verified variable to true after the verification action succeeds using @utils.setVariables.",
     "explanation": "The correct answer is C. The team already has the variable and plans to use a guard condition, but the guard is useless unless the variable is updated after the verification action succeeds. @utils.setVariables or equivalent variable-setting logic must change is_verified to true when the dealer passes verification. Option A is incomplete because adding the guard only defines the condition; it does not change the state that the condition evaluates. Option B is wrong because an immutable variable would prevent the verification status from being updated during the session. In Agent Script, variables maintain state across turns and subagents, and filters or availability rules use that state to control what the reasoning engine can access."
   },
   {
@@ -4529,7 +4530,7 @@ const QUESTIONS = [
       "Enable the default Instruction Adherence evaluation which natively uses LLM-as-judge.",
       "Create a custom evaluation with a tailored prompt outlining the framework's criteria."
     ],
-    "correctAnswerText": "Create a custom evaluation with a tailored prompt outlining the framework’s criteria.",
+    "correctAnswerText": "Create a custom evaluation with a tailored prompt outlining the framework's criteria.",
     "explanation": "The correct answer is C because the company is not asking for a generic quality score; it needs evaluation against a proprietary de-escalation framework and empathy standard. Salesforce Testing Center supports LLM-judge style evaluations where a judge model compares the agent response against task criteria. For a custom rubric, the specialist should create a custom evaluation and provide a tailored prompt that defines the exact framework criteria. Option A is wrong because standard Coherence is not intended to be rewritten into a proprietary policy rubric. Option B is also too generic because default instruction adherence does not necessarily understand UC’s internal deescalation model. Custom evaluation is the right mechanism for organization-specific qualitative standards."
   },
   {
@@ -4857,7 +4858,7 @@ function restoreSubmittedState(tabIndex) {
 
     const selectedText = state.answers[qid];
     const isCorrect = (selectedText !== undefined && selectedText !== null)
-      ? compareAnswers(selectedText, q.correctAnswerText)
+      ? selectedText.trim() === q.correctAnswerText.trim()
       : false;
 
     if (state.mode === "study") {
@@ -4866,9 +4867,9 @@ function restoreSubmittedState(tabIndex) {
       options.forEach(opt => {
         const optText = opt.querySelector(".option-text").textContent.trim();
         opt.classList.add("disabled");
-        if (compareAnswers(optText, q.correctAnswerText)) {
+        if (optText === q.correctAnswerText.trim()) {
           opt.classList.add("correct");
-        } else if (selectedText && compareAnswers(optText, selectedText)) {
+        } else if (selectedText && optText === selectedText.trim()) {
           opt.classList.add("incorrect");
         }
       });
@@ -5008,7 +5009,7 @@ window.submitAnswer = function (qid) {
   const selectedText = state.answers[qid];
   if (selectedText === undefined || selectedText === null) return;
 
-  const isCorrect = compareAnswers(selectedText, q.correctAnswerText);
+  const isCorrect = selectedText.trim() === q.correctAnswerText.trim();
   const activeTabPane = $(`#tab-${state.activeTab}`);
 
   if (state.mode === "exam") {
@@ -5039,9 +5040,9 @@ window.submitAnswer = function (qid) {
     opt.classList.add("disabled");
     opt.classList.remove("selected");
 
-    if (compareAnswers(optText, q.correctAnswerText)) {
+    if (optText === q.correctAnswerText.trim()) {
       opt.classList.add("correct");
-    } else if (compareAnswers(optText, selectedText)) {
+    } else if (optText === selectedText.trim()) {
       opt.classList.add("incorrect");
     }
   });
@@ -5073,7 +5074,7 @@ function updateScoreMatrix() {
     const selectedText = state.answers[qid];
     if (selectedText === undefined || selectedText === null) return;
 
-    if (compareAnswers(selectedText, q.correctAnswerText)) {
+    if (selectedText.trim() === q.correctAnswerText.trim()) {
       correctCount++;
     }
   });
@@ -5246,7 +5247,7 @@ function submitExam() {
     const selectedText = state.answers[q.id];
 
     if (selectedText !== undefined && selectedText !== null) {
-      if (compareAnswers(selectedText, q.correctAnswerText)) {
+      if (selectedText.trim() === q.correctAnswerText.trim()) {
         totalCorrect++;
         sectionResults[q.category].correct++;
       }
@@ -5338,7 +5339,7 @@ window.closeResults = function () {
   state.questions.forEach(q => {
     const selectedText = state.answers[q.id];
     const isCorrect = (selectedText !== undefined && selectedText !== null)
-      ? compareAnswers(selectedText, q.correctAnswerText)
+      ? selectedText.trim() === q.correctAnswerText.trim()
       : false;
 
     // Find the cards across all tabs in the DOM
@@ -5352,9 +5353,9 @@ window.closeResults = function () {
         opt.classList.add("disabled");
         opt.classList.remove("selected");
 
-        if (compareAnswers(optText, q.correctAnswerText)) {
+        if (optText === q.correctAnswerText.trim()) {
           opt.classList.add("correct");
-        } else if (selectedText && compareAnswers(optText, selectedText)) {
+        } else if (selectedText && optText === selectedText.trim()) {
           opt.classList.add("incorrect");
         }
       });
@@ -5415,22 +5416,6 @@ function bindEvents() {
 // ============================================================
 // SECTION 14: UTILITY FUNCTIONS
 // ============================================================
-
-function compareAnswers(a, b) {
-  if (a === undefined || a === null || b === undefined || b === null) return false;
-
-  const normalize = (str) => {
-    return str
-      .trim()
-      .toLowerCase()
-      .replace(/[\u2018\u2019\u00b4`']/g, "'") // curly to straight single quotes
-      .replace(/[\u201c\u201d"]/g, '"')         // curly to straight double quotes
-      .replace(/[.,;:!?]/g, "")                 // remove punctuation
-      .replace(/\s+/g, " ");                    // normalize spacing
-  };
-
-  return normalize(a) === normalize(b);
-}
 
 function arraysEqual(a, b) {
   if (a.length !== b.length) return false;
