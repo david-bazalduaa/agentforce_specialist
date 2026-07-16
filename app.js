@@ -1568,7 +1568,7 @@ const QUESTIONS = [
       "Running tests does not consume Einstein Requests.",
       "Agentforce Testing Center can only be used in a production environment."
     ],
-    "correctAnswerText": "Running tests does not consume Einstein Requests.",
+    "correctAnswerText": "Running tests risks modifying CRM data in a production environment.",
     "explanation": "The Agentforce Testing Center is a tool in Agentforce Studio for validating agent performance. Let’s evaluate the statements. Option A: Running tests risks modifying CRM data in a production environment.Agentforce Testing Center runs synthetic interactions in a controlled environment (e.g., sandbox or isolated test space) and doesn’t modify live CRM data. It’s designed for safe pre-deployment testing, making this incorrect. Option B: Running tests does not consume Einstein Requests.Einstein Requests are part of the usage quota for Einstein Generative AI features (e.g., prompt executions in production). Testing Center uses synthetic data to simulate interactions without invoking live AI calls that count against this quota. Salesforce documentation confirms tests don’t consume requests, making this the correct answer. Option C: Agentforce Testing Center can only be used in a production environment.Testing Center is available in both sandbox and production orgs, but it’s primarily used pre-deployment (e.g., in sandboxes) to validate agents safely. This restriction is false, making it incorrect. Why Option B is Correct: Not consuming Einstein Requests is a key feature of Testing Center, allowing extensive testing without impacting quotas, as per Salesforce documentation. Reference: Salesforce Help: Agentforce Testing – Details safe, isolated testing."
   },
   {
