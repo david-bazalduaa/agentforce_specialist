@@ -644,8 +644,8 @@ const QUESTIONS = [
       "Agent Builder",
       "Model Playground"
     ],
-    "correctAnswerText": "Model Playground",
-    "explanation": "The Model Playground allows an Agentforce Specialist to test and simulate real-world user utterances against the configured actions, ensuring the custom Agent action is triggered appropriately based on intent matching and natural language understanding—without needing a full deployment."
+    "correctAnswerText": "Agent Builder",
+    "explanation": "The Agent Builder allows an Agentforce Specialist to test and simulate real-world user utterances against the configured actions, ensuring the custom Agent action is triggered appropriately based on intent matching and natural language understanding—without needing a full deployment."
   },
   {
     "id": 41,
@@ -752,8 +752,8 @@ const QUESTIONS = [
       "Agent",
       "Copilot Builder"
     ],
-    "correctAnswerText": "Model Playground",
-    "explanation": "Model Playground (specifically within the context of Generative AI and Copilot in Salesforce) allows you to test and refine the behavior of your AI models and, by extension, how your copilot actions interpret and respond to different user inputs (utterances). It's a sandbox environment where you can: Input various user utterances. See how the underlying Large Language Model (LLM) and the copilot's reasoning engine classify those utterances. Observe which actions are triggered by those utterances. Adjust the action instructions and examples to improve the copilot's understanding and ensure the correct action is chosen for specific user requests. This iterative testing is crucial for ensuring the action performs as expected in real-world scenarios."
+    "correctAnswerText": "Copilot Builder",
+    "explanation": "Copilot Builder helps to check how your copilot actions interpret and respond to different user inputs (utterances). It's a sandbox environment where you can: Input various user utterances. See how the underlying Large Language Model (LLM) and the copilot's reasoning engine classify those utterances. Observe which actions are triggered by those utterances. Adjust the action instructions and examples to improve the copilot's understanding and ensure the correct action is chosen for specific user requests. This iterative testing is crucial for ensuring the action performs as expected in real-world scenarios."
   },
   {
     "id": 50,
@@ -884,7 +884,7 @@ const QUESTIONS = [
       "Prompt Builder must be used to assign the fields from the related list as a JSON format.",
       "The fields for the related list are based on the default page layout of the Account for the current user."
     ],
-    "correctAnswerText": "The fields for the related list are based on the default page layout of the Account for the current user.",
+    "correctAnswerText": "After selecting a related list from the Account, use the field picker to choose merge fields in Prompt Builder.",
     "explanation": "Context of the QuestionUniversal Containers (UC) wants to include details from a related list on the Account object in a prompt template. This is typically done via Prompt Builder in Salesforce’s generative AI setup. ## Prompt Builder Behavior Selecting a Related List: Within Prompt Builder, you can navigate to the object (Account) and choose which related list (e.g., Contacts, Opportunities) you want to reference. Field Picker: Once a related list is chosen, Prompt Builder provides a field picker interface, allowing you to select specific fields from that related list. These fields then become available for merge fields or dynamic insertion within your prompt. Why Option A is Correct Direct Alignment with the Standard Process: The recommended approach in Salesforce’s documentation is to select a related list and then use the field picker to add the necessary fields into your AI prompt. This ensures the prompt has exactly the data you need from that related list. Why Not Option B (JSON Formatting) No Mandatory JSON Requirement: Although you can structure data as JSON if you desire advanced formatting, Prompt Builder does not require you to manually assign the fields from the related list in JSON. The platform automatically handles how the data is passed along in the background. Why Not Option C (Default Page Layout) Independent of Page Layout: Prompt Builder does not rely strictly on the default page layout for fields. You can configure the fields you want from the related list, independent of how the user’s page layout is set up in the UI. ConclusionSince the official Salesforce approach involves selecting a related list and then using the field picker to insert merge fields, Option A is the correct and verified answer. Salesforce Agentforce Specialist Reference & Documents Salesforce Official Documentation: Prompt Builder BasicsExplains how to reference objects and related lists when building AI prompts. Salesforce Trailhead: Get Started with Prompt BuilderProvides hands-on exercises demonstrating how to pick fields from related objects or lists. Salesforce Agentforce Specialist Study GuideOutlines best practices for referencing related records and fields in generative AI prompts."
   },
   {
@@ -908,7 +908,7 @@ const QUESTIONS = [
       "The response is not toxic.",
       "The response is the most toxic."
     ],
-    "correctAnswerText": "The response is not toxic.",
+    "correctAnswerText": "The response is the most toxic.",
     "explanation": "Einstein Trust Layer’s Toxicity Scoring categorizes content on a scale of 0 to 1, where 1 indicates the highest level of toxicity (e.g., harmful, biased, or inappropriate language). This scoring helps organizations filter unsafe AI-generated content. A score of 1 triggers mitigation actions, such as blocking the response or alerting administrators. A score of 0 would indicate no toxicity (B is incorrect). The scoring system does not use \"least toxic\" as a category (A is misleading). Reference: Salesforce Help Article: Einstein Trust Layer – Toxicity Scoring (\"Interpreting Toxicity Scores\" section). Einstein GPT Safety Overview: \"Mitigating Harmful Content with Toxicity Detection.\""
   },
   {
@@ -980,7 +980,7 @@ const QUESTIONS = [
       "It shows the response from the LLM based on the sample record.",
       "It shows which sensitive data is masked before it is sent to the LLM."
     ],
-    "correctAnswerText": "It shows the response from the LLM based on the sample record.",
+    "correctAnswerText": "It shows the full text that is sent to the Trust Layer.",
     "explanation": "In Salesforce Agentforce, when previewing a prompt template, the interface displays two outputs: Resolution and Response. These terms relate to how the prompt is processed and evaluated, particularly in the context of the Einstein Trust Layer, which ensures AI safety, compliance, and auditability. The Resolution text specifically refers to the full text that is sent to the Trust Layer for processing, monitoring, and governance (Option A). This includes the constructed prompt (with grounding data, instructions, and variables) as it’s submitted to the large language model (LLM), along with any Trust Layer interventions (e.g., masking, filtering) applied before or after LLM processing. It’s a comprehensive view of the input/output flow that the Trust Layer captures for auditing and compliance purposes. Option B: The \"Response\" output in the preview shows the LLM’s generated text based on the sample record, not the Resolution. Resolution encompasses more than just the LLM response—it includes the entire payload sent to the Trust Layer. Option C: While the Trust Layer does mask sensitive data (e.g., PII) as part of its guardrails, the Resolution text doesn’t specifically isolate \"which sensitive data is masked.\" Instead, it shows the full text, including any masked portions, as processed by the Trust Layer—not a separate masking log. Option A: This is correct, as Resolution provides a holistic view of the text sent to the Trust Layer, aligning with its role in monitoring and auditing the AI interaction. Thus, Option A accurately describes the purpose of the Resolution text in the prompt template preview."
   },
   {
@@ -1196,7 +1196,7 @@ const QUESTIONS = [
       "Add Prompt Instructions",
       "Add Flow Instructions"
     ],
-    "correctAnswerText": "Add Flow Instructions",
+    "correctAnswerText": "Add Prompt Instructions",
     "explanation": ""
   },
   {
@@ -1244,8 +1244,8 @@ const QUESTIONS = [
       "Copilot Builder within the Dynamic Panel, confirm selected action and observe the values in Input and Output sections.",
       "In Copilot Builder, verify the utterance entered by the user and review session event logs for debug information."
     ],
-    "correctAnswerText": "In Copilot Builder within the Dynamic Panel, turn on dynamic debugging to show the inputs and outputs.",
-    "explanation": "When troubleshooting a copilot custom action using flow as the reference action type, enabling dynamic debugging within Copilot Builder's Dynamic Panel is the most effective way to identify the root cause. By turning on dynamic debugging, the Agentforce Specialist can see detailed logs showing both the inputs and outputs of the flow, which helps identify where the action might be failing or not delivering the expected results. Option B, confirming selected actions and observing the Input and Output sections, is useful for monitoring flow configuration but does not provide the deep diagnostic details available with dynamic debugging. Option C, verifying the user utterance and reviewing session event logs, could provide helpful context, but dynamic debugging is the primary tool for identifying issues with inputs and outputs in real time. Salesforce Agentforce Specialist Reference: To explore more about dynamic debugging in Copilot Builder, see: https://help.salesforce.com/s/articleView?id=sf.copilot_custom_action_debugging.htm"
+    "correctAnswerText": "Copilot Builder within the Dynamic Panel, confirm selected action and observe the values in Input and Output sections.",
+    "explanation": ""
   },
   {
     "id": 91,
@@ -1265,11 +1265,11 @@ const QUESTIONS = [
     "question": "Coral Cloud Resorts wants visibility into credit usage associated with testing. Which feature supports this?",
     "choices": [
       "Agentforce Analytics",
-      "B. Digital Wallet",
+      "Digital Wallet",
       "Testing Center"
     ],
-    "correctAnswerText": "Testing Center",
-    "explanation": "The AgentForce Testing Center Guide specifies that all testing activity—including prompt tests, structured batch runs, and evaluation sessions—consumes AI credits, which can be monitored directly through the Testing Center interface. The documentation states: “Testing Center provides visibility into testing performance, outcomes, and credit usage. Administrators can view test credit consumption metrics to understand resource utilization across agents and environments.” Agentforce Analytics (Option A) provides insights into performance, engagement, and operational metrics but does not directly track credit consumption tied to testing. Digital Wallet (Option B) manages AI credit balances across orgs but does not offer test-specific tracking. Therefore, Testing Center is the correct answer since it explicitly supports monitoring credit usage during agent testing activities. Reference (AgentForce Documents / Study Guide): AgentForce Testing Center Guide: “Monitoring Credit Consumption During Testing” AgentForce Admin Handbook: “Tracking Usage and Test Costs” AgentForce Study Guide: “Testing Resource Visibility and Credit Management”"
+    "correctAnswerText": "Digital Wallet",
+    "explanation": ""
   },
   {
     "id": 93,
@@ -2012,7 +2012,7 @@ const QUESTIONS = [
       "Turn on Service Replies, Service AI Grounding, and Grounding with Knowledge.",
       "Turn on Service AI Grounding and Grounding with Knowledge."
     ],
-    "correctAnswerText": "Turn on Service AI Grounding and Grounding with Knowledge.",
+    "correctAnswerText": "Turn on Service Replies, Service AI Grounding, and Grounding with Knowledge.",
     "explanation": "To meet Universal Containers' goal of improving efficiency and reducing agent handling time with AIgenerated responses, the best approach is to enable Service Replies, Service AI Grounding, and Grounding with Knowledge. Service Replies generates responses automatically. Service AI Grounding ensures that the AI is using relevant case data. Grounding with Knowledge ensures that responses are backed by Salesforce Knowledge articles, allowing agents to identify whether a response is coming from the LLM or Salesforce Knowledge. Option C does not include Service Replies, which is necessary for generating AI responses. Option A lacks the Grounding with Knowledge, which is essential for identifying response sources. For more details, refer to Salesforce Service AI documentation on grounding and service replies."
   },
   {
@@ -2120,8 +2120,8 @@ const QUESTIONS = [
       "Field Generation, and that Dynamic Forms is enabled",
       "Flex, and that Dynamic Fields is enabled"
     ],
-    "correctAnswerText": "Field Generation, and that Dynamic Fields is enabled",
-    "explanation": "Salesforce Agentforce provides various prompt template types to support AI-driven tasks, such as generating text or populating fields. In this case, UC needs a custom prompt template to populate a field with generated output, which directly aligns with the Field Generation prompt template type. This type is designed to use generative AI to create field values (e.g., summaries, descriptions) based on input data or prompts, making it the ideal choice for UC’s requirement. Additionally, UC has enabled the Einstein Trust Layer, a governance framework that ensures AI outputs are safe, explainable, and auditable, capturing AI Audit data for monitoring adoption and identifying improvement areas. The consideration UC should review is whether Dynamic Fields is enabled. Dynamic Fields allow the prompt template to incorporate variable data from Salesforce records (e.g., case details, customer info) into the prompt, ensuring the generated output is contextually relevant to each record. This is critical for field population tasks, as static prompts wouldn’t adapt to record-specific needs. The Einstein Trust Layer further benefits from this, as it can track how dynamic inputs influence outputs for audit purposes. Option A: Correct. \"Field Generation\" matches the use case, and \"Dynamic Fields\" is a key consideration to ensure flexibility and auditability with the Trust Layer. Option B: \"Field Generation\" is correct, but \"Dynamic Forms\" is unrelated. Dynamic Forms is a UI feature for customizing page layouts, not a prompt template setting, making this option incorrect. Option C: \"Flex\" templates are more general-purpose and not specifically tailored for field population tasks. While Dynamic Fields could apply, Field Generation is the better fit for UC’s stated goal. Option A is the best choice, as it pairs the appropriate template type (Field Generation) with a relevant consideration (Dynamic Fields) for UC’s scenario with the Einstein Trust Layer."
+    "correctAnswerText": "Field Generation, and that Dynamic Forms is enabled",
+    "explanation": ""
   },
   {
     "id": 164,
@@ -2660,8 +2660,8 @@ const QUESTIONS = [
       "SDR Agent only works in the Email channel.",
       "SDR Agent must also be deployed on the company website."
     ],
-    "correctAnswerText": "SDR Agent must be deployed in the Messaging channel.",
-    "explanation": "Universal Containers (UC) is implementing the Agentforce Sales Development Representative (SDR) Agent, a prebuilt AI agent designed to qualify leads and schedule meetings. Channel considerations are critical for deployment. Let’s evaluate the options based on official Salesforce documentation. Option A: SDR Agent must be deployed in the Messaging channel.The Agentforce SDR Agent is designed to engage prospects in real-time conversations, primarily through the Messaging channel (e.g., Salesforce Messaging for in-app or web chat). This aligns with its purpose of qualifying leads interactively and scheduling meetings, as outlined in Agentforce for Sales documentation. While it may leverage email for follow-ups, its core deployment and interaction occur via Messaging, making this a key consideration UC must be aware of. This is the correct answer. Option B: SDR Agent only works in the Email channel.The SDR Agent is not limited to email. While it can send emails (e.g., follow-ups after lead qualification), its primary function—real-time lead engagement—relies on Messaging. Stating it \"only works in the Email channel\" is inaccurate and contradicts its documented capabilities, making this incorrect. Option C: SDR Agent must also be deployed on the company website.While the SDR Agent can be embedded on a company website via Messaging (e.g., as a chat widget), this is an implementation choice, not a mandatory requirement. The agent’s deployment is channel-specific (Messaging), and website integration is optional, not a \"must.\" This option overstates the requirement, making it incorrect. Why Option A is Correct: The SDR Agent’s primary deployment in the Messaging channel is a documented consideration for its real-time lead qualification capabilities. UC must plan for this channel to ensure effective implementation, as per Salesforce guidelines. Reference: Salesforce Help: Agentforce for Sales > SDR Agent – Confirms Messaging deployment requirement."
+    "correctAnswerText": "SDR Agent only works in the Email channel.",
+    "explanation": ""
   },
   {
     "id": 209,
@@ -2900,8 +2900,8 @@ const QUESTIONS = [
       "Agent Insights",
       "Agent Optimization"
     ],
-    "correctAnswerText": "Agent Inspection",
-    "explanation": "Agent Inspection is the best fit because the requirement is to examine complete end-to-end agent interactions, not merely view aggregate performance trends or optimize unresolved sessions. The question specifically mentions tracing the interaction from the first user request through final resolution, which requires inspection-level visibility into what the agent interpreted, which subagent or action path it followed, and what response quality was produced. Agent Insights would imply summarized analytics, while Agent Optimization is more focused on identifying improvement opportunities after sessions are analyzed. Salesforce’s Agentforce Session Tracing guidance explains that detailed interaction data is captured to provide a full view of agent behavior, which is exactly what this scenario requires."
+    "correctAnswerText": "Agent Optimization",
+    "explanation": ""
   },
   {
     "id": 229,
@@ -3415,7 +3415,7 @@ const QUESTIONS = [
       "Create a field set for all the fields to be grounded.",
       "Enable and configure dynamic form for the object."
     ],
-    "correctAnswerText": "Configure page layout of the master record type.",
+    "correctAnswerText": "Create a field set for all the fields to be grounded.",
     "explanation": "Record Snapshots in Salesforce Prompt Builder leverage the data visible on the user's page layout for an object to ground the prompt. This means that the fields and related lists that are configured on the page layout directly influence the data included in the snapshot."
   },
   {
@@ -3919,7 +3919,7 @@ const QUESTIONS = [
       "Convert the JSON to an XML merge field.",
       "Use the 'Add Prompt Instructions' flow element."
     ],
-    "correctAnswerText": "Use External Service Record merge fields.",
+    "correctAnswerText": "Use the 'Add Prompt Instructions' flow element.",
     "explanation": "As outlined in the AgentForce External Services and Prompt Flow Integration Guide, when data is retrieved from a registered external service via REST API, the response payload is stored as External Service Records. These records can then be referenced dynamically within prompt templates through External Service Record merge fields. This approach allows the large language model (LLM) to use the fetched data as contextual grounding during prompt execution, ensuring that generated responses are accurate and consistent with the latest API results. Option B is incorrect because AgentForce does not use XML merge fields for API responses; JSON data is automatically mapped to object structures. Option C is also incorrect — the “Add Prompt Instructions” element modifies prompt context or tone but does not pass external data for merge use. Therefore, the correct method is Option A – Use External Service Record merge fields, ensuring the external service data is directly available for prompt templates. Reference: AgentForce Developer Guide — “Integrating External Services and Using Merge Fields in Prompt Flows.”"
   },
   {
@@ -4399,7 +4399,7 @@ const QUESTIONS = [
       "Ground with Record Merge Fields",
       "Automatic grounding using Draft with Einstein feature"
     ],
-    "correctAnswerText": "Automatic grounding using Draft with Einstein feature",
+    "correctAnswerText": "Ground with Record Merge Fields",
     "explanation": "For Einstein Sales Emails to generate personalized follow-up emails, it is crucial to ground the email content with the most up-to-date and accurate information. Grounding refers to connecting the AI model with real-time data. The most appropriate technique in this case is Ground with Record Merge Fields. This method ensures that the content in the emails pulls dynamic and accurate data directly from Salesforce records, such as lead or contact information, ensuring the follow-up is relevant and customized based on the specific record. Record Merge Fields ensure the generated emails are highly personalized using data like lead name, company, or other Salesforce fields directly from the records. Apex Merge Fields are typically more suited for advanced, custom logic-driven scenarios but are not the most straightforward for this use case. Automatic grounding using Draft with Einstein is a different feature where Einstein automatically drafts the email, but it does not specifically ground the content with record-specific data like Record Merge Fields. Salesforce Einstein Sales Emails Documentation: https://help.salesforce.com/s/articleView?id=release-notes.rn_einstein_sales_emails.htm"
   },
   {
